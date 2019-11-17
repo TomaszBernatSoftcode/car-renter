@@ -1,0 +1,15 @@
+{% load i18n %}
+
+<h3>{% blocktrans with filter_title=title %} By {{ filter_title }} {% endblocktrans %}</h3>
+
+<ul>
+	<form action="" method="get">
+        <div>
+            Start value: <input type="number" min="0" step="0.01" name="{{ spec.lookup_kwarg_min }}" value="" class="" placeholder="00,00"/>
+        </div>
+        <div>
+            Stop value: <input type="number" min="0" step="0.01" name="{{ spec.lookup_kwarg_max }}" value="" class="" placeholder="00,00"/>
+        </div>
+		<input type="submit" value="Filter"/>
+	</form>
+</ul>

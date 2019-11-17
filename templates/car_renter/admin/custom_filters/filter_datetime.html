@@ -1,0 +1,20 @@
+{% load i18n %}
+
+<h3>{% blocktrans with filter_title=title %} By {{ filter_title }} {% endblocktrans %}</h3>
+
+<ul>
+	{% for choice in choices %}
+		<li{% if choice.selected %} class="selected"{% endif %}>
+		<a href="{{ choice.query_string|iriencode }}">{{ choice.display }}</a></li>
+	{% endfor %}
+
+	<form action="" method="get">
+        <div>
+            Start date: <input type="text" name="{{ spec.lookup_kwarg_since }}" value="" class="dateinput" placeholder="YYYY-MM-DD"/>
+        </div>
+        <div>
+            Stop date: <input type="text" name="{{ spec.lookup_kwarg_until }}" value="" class="dateinput" placeholder="YYYY-MM-DD"/>
+        </div>
+		<input type="submit" value="Filter"/>
+	</form>
+</ul>

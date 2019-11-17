@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pl">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+        <meta name="robots" content="noindex,nofollow,noimageindex,noarchive,nosnippet,noyaca">
+
+        <title>XTG</title>
+
+        <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="{% static 'css/base.css' %}" />
+
+        {% block page_head %}{% endblock %}
+
+        {% block style %}{% endblock %}
+
+    </head>
+
+    <body>
+        <script src="{% static 'js/utilities.js' %}"></script>
+        <script src="{% static 'js/plugins/luxon.js' %}"></script>
+        <script src="{% static 'js/plugins/js.cookie.js' %}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.13/lodash.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+        <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+        <script src="https://unpkg.com/vue-toasted"></script>
+        <script>
+            var GLOBAL = {
+                pageUrl: '127.0.0.1:8000/',
+            }
+            Vue.http.options.root = ['inner-api/'].join('')
+            Vue.http.headers.common['X-CSRFTOKEN'] = Cookies.get('csrftoken')
+            Vue.use(Toasted)
+        </script>
+
+        {% block page_body %}
+            {% block content %}{% endblock %}
+        {% endblock %}
+
+        {% block scripts %}{% endblock %}
+    </body>
+</html>
