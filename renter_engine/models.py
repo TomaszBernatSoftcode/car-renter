@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.contrib.gis.db import models as gis_models
 from django.core.validators import MaxValueValidator, MinValueValidator
 from datetime import date
 from renter_engine.model_fields_validators import NAME_PATTERN, DETAILED_NAME_PATTERN,\
