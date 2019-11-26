@@ -16,7 +16,6 @@ class City(models.Model):
 
     user = models.ForeignKey(User, null=True, related_name='cities', on_delete=models.SET_NULL, verbose_name='Użytkownik')
     name = models.CharField(unique=True, max_length=24, validators=[NAME_PATTERN, ], verbose_name='Nazwa miasta')
-    city_border = gis_models.PolygonField(verbose_name='Granice miasta')
     add_date = models.DateField(default=date.today, verbose_name='Data dodania miasta')
 
     def __str__(self):
