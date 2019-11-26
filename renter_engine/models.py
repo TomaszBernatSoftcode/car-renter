@@ -167,7 +167,8 @@ class CarDetails(models.Model):
     status = models.CharField(max_length=9, choices=CAR_STATUS_CHOICES, verbose_name='Status pojazdu')
     image = models.ImageField()
     description = models.TextField()
-    last_geo_position = gis_models.PointField()
+    last_geo_lat = models.DecimalField(max_digits=10, decimal_places=7, null=False)
+    last_geo_lon = models.DecimalField(max_digits=10, decimal_places=7, null=False)
     last_update_date = models.DateField(default=date.today, verbose_name='Data ostatniej aktualizacji')
 
     def __str__(self):
@@ -216,8 +217,10 @@ class CarRent(models.Model):
     user = models.ForeignKey(User, null=True, related_name='rents', on_delete=models.SET_NULL, verbose_name='Użytkownik')
     client = models.ForeignKey('Client', related_name='rents', on_delete=models.CASCADE, verbose_name='Klient')
     offer = models.ForeignKey('Offer', related_name='rents', on_delete=models.CASCADE, verbose_name='Oferta')
-    start_position = gis_models.PointField(verbose_name='Pierwsza pozycja')
-    stop_position = gis_models.PointField(null=True, blank=True, verbose_name='Ostatnia pozycja')
+    start_geo_lat = models.DecimalField(max_digits=10, decimal_places=7, null=False)
+    start_geo_lon = models.DecimalField(max_digits=10, decimal_places=7, null=False)
+    stop_geo_lat = models.DecimalField(max_digits=10, decimal_places=7, null=False)
+    stop_geo_lon = models.DecimalField(max_digits=10, decimal_places=7, null=False)
     start_ts = models.DateTimeField(verbose_name='Moment rozpoczęcia')
     stop_ts = models.DateTimeField(verbose_name='Planowany moment zakończenia')
     true_stop_ts = models.DateTimeField(null=True, blank=True, verbose_name='Moment zakończenia')
