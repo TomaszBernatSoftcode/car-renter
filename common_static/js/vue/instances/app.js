@@ -1,8 +1,10 @@
 new Vue({
-  el: '#landing-page-panel-container',
+  el: '#car-renter-app',
   vuetify: new Vuetify(),
   delimiters: ['[[', ']]'],
   data: {
+    drawer: null,
+    source: ''
   },
   computed: {
   },

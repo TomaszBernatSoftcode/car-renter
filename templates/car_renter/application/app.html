@@ -1,0 +1,83 @@
+{% extends "car_renter/base.html" %}
+{% load static%}
+{% block content %}
+    <div id="car-renter-app">
+        <v-app id="inspire">
+            <!-- Kontent nawigacji -->
+            <v-navigation-drawer
+                    v-model="drawer"
+                    app
+                    right
+            >
+                <v-list dense>
+                    <v-list-item link>
+                        <v-list-item-action>
+                            <v-icon>mdi-home</v-icon>
+                        </v-list-item-action>
+
+                        <v-list-item-content>
+                            <v-list-item-title>Home</v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+
+                    <v-list-item link>
+                        <v-list-item-action>
+                            <v-icon>mdi-contact-mail</v-icon>
+                        </v-list-item-action>
+
+                        <v-list-item-content>
+                            <v-list-item-title>Contact</v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+                </v-list>
+            </v-navigation-drawer>
+
+            <!-- Render nawigacji -->
+            <v-app-bar
+                    app
+                    color="cyan"
+                    dark
+            >
+                <v-spacer />
+
+                <v-toolbar-title>Rent&Go</v-toolbar-title>
+
+                <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+            </v-app-bar>
+
+            <!-- Kontent strony -->
+            <v-content>
+
+                {% if ladning_page %}
+                    <landing-page></landing-page>
+                {% elif renter_panel %}
+                    <renter-panel></renter-panel>
+                {% elif map_panel %}
+                    <map-panel></map-panel>
+                {% elif user_panel %}
+                    <user-panel></user-panel>
+                {% else %}
+                    <!-- TODO: zrobic redirect do not found -->
+                {% endif %}
+
+            </v-content>
+
+            <v-footer
+                    color="cyan"
+                    app
+            >
+                <v-spacer />
+
+                <span class="white--text">&copy; 2019</span>
+            </v-footer>
+        </v-app>
+    </div>
+    <!-- shared components -->
+    <!-- view components -->
+    <script src="{% static "js/vue/components/views/landing_page.js" %}"></script>
+    <script src="{% static "js/vue/components/views/map_panel.js" %}"></script>
+    <script src="{% static "js/vue/components/views/renter_panel.js" %}"></script>
+    <script src="{% static "js/vue/components/views/user_panel.js" %}"></script>
+    <!-- app -->
+    <script src="{% static "js/vue/instances/app.js" %}"></script>
+{% endblock %}
