@@ -13,7 +13,7 @@ class CustomDateFieldListFilter(DateFieldListFilter):
     """
     Filtr z wlasnymi zakresami dat
     """
-    template = "xtg_engine/admin/custom_filters/filter_datetime.html"
+    template = "car_renter/admin/custom_filters/filter_datetime.html"
 
     def __init__(self, field, request, params, model, model_admin, field_path):
         self.field_generic = '%s__' % field_path
@@ -121,7 +121,7 @@ class CustomDateFieldListFilter(DateFieldListFilter):
 
 class ValueRangeFilter(FieldListFilter):
 
-    template = "xtg_engine/admin/custom_filters/filter_values.html"
+    template = "car_renter/admin/custom_filters/filter_values.html"
 
     def __init__(self, field, request, params, model, model_admin, field_path):
         self.field = field
