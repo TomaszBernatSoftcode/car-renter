@@ -11,7 +11,7 @@ class City(models.Model):
         verbose_name = 'Miasto'
         verbose_name_plural = 'Miasta'
         ordering = ['name']
-        unique_together = ['name', 'city_border']
+        unique_together = ['name', ]
 
     user = models.ForeignKey(User, null=True, related_name='cities', on_delete=models.SET_NULL, verbose_name='Użytkownik')
     name = models.CharField(unique=True, max_length=24, validators=[NAME_PATTERN, ], verbose_name='Nazwa miasta')
@@ -103,7 +103,7 @@ class Car(models.Model):
         verbose_name_plural = 'Pojazdy'
         ordering = ['creation_date', 'brand', 'model']
         unique_together = [
-            'brand', 'type', 'model', 'creation_date', 'fuel_type'
+            'brand', 'type', 'model', 'creation_date', 'fuel_type',
             'boot_capacity', 'person_capacity',
             'average_burning', 'gearbox_type', 'color',
         ]
