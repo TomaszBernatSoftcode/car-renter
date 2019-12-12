@@ -1,0 +1,54 @@
+from django.contrib.auth.models import User
+from renter_engine.models import City, Address, Client, Car, CarDetails, Offer, CarRent
+from random import uniform
+from datetime import datetime, date
+from random import randint
+from decimal import Decimal
+
+# zmienic na swoja nazwe uzytkownika 
+user = User.objects.get(username='tbernat')
+ 
+City(user=user,name="Opole",add_date=date.today()).save()
+city=City.objects.get(id=1)
+ 
+Address(user=user,city=city,street="Ozimska",house_number="34",apartment_number="2",postal_code="47-00", creation_date=date.today()).save()
+Address(user=user,city=city,street="Drobiarska",house_number="10",apartment_number="2",postal_code="47-00", creation_date=date.today()).save()
+Address(user=user,city=city,street="Oleska",house_number="33",apartment_number="",postal_code="47-15", creation_date=date.today()).save()
+Address(user=user,city=city,street="Oleska",house_number="34",apartment_number="2",postal_code="47-00", creation_date=date.today()).save()
+Address(user=user,city=city,street="1-maja",house_number="10",apartment_number="4",postal_code="47-54", creation_date=date.today()).save()
+
+#Clients objects creation
+Client(user=user, address=Address.objects.get(id=1), name="Adam", last_name="Wkładam", email="adam.wkladam@gmail.com", phone_number="111-000-111", registration_date=date.today()).save()
+Client(user=user, address=Address.objects.get(id=2), name="Kamil", last_name="Note", email="kamil.note@gmail.com", phone_number="113-222-113", registration_date=date.today()).save()
+Client(user=user, address=Address.objects.get(id=3), name="Hassan", last_name="Kebab", email="hassan.kebab@gmail.com", phone_number="555-010-666", registration_date=date.today()).save()
+Client(user=user, address=Address.objects.get(id=4), name="Max", last_name="Newman", email="max.newman@gmail.com", phone_number="771-000-111", registration_date=date.today()).save()
+Client(user=user, address=Address.objects.get(id=5), name="Piotr", last_name="Kosa", email="piotr.kosa@gmail.com", phone_number="881-080-199", registration_date=date.today()).save()
+
+#Car objects creation
+Car(user=user, brand="Audi", type="A4 Allroad", model="XX12", boot_capacity="350", person_capacity="5", fuel_type="gasoline",  average_burning="8", gearbox_type="manual", color="black", creation_date=date(2015,1,10), car_add_date=date.today()).save()
+Car(user=user, brand="Skoda", type="Fabia", model="Active", boot_capacity="425", person_capacity="5", fuel_type="electricity",  average_burning="14", gearbox_type="auto", color="green", creation_date=date(2013,5,7), car_add_date=date.today()).save()
+Car(user=user, brand="Opel", type="Corsa", model="ZXC12", boot_capacity="250", person_capacity="5", fuel_type="electricity",  average_burning="11", gearbox_type="manual", color="red", creation_date=date(2016,3,17), car_add_date=date.today()).save()
+Car(user=user, brand="Volkswagen", type="Polo", model="YYM12", boot_capacity="500", person_capacity="5", fuel_type="gasoline",  average_burning="15", gearbox_type="auto", color="yellow", creation_date=date(2018,2,8), car_add_date=date.today()).save()
+Car(user=user, brand="Fiat", type="Panda", model="MM12", boot_capacity="200", person_capacity="5", fuel_type="electricity",  average_burning="8", gearbox_type="manual", color="black", creation_date=date(2018,2,8), car_add_date=date.today()).save()
+
+#CarDetails objects creation
+#dodać image
+car=list(Car.objects.all())
+CarDetails(user=user, car=car[0], number_plate="OST444ac", mileage="124000", status=CarDetails.AVAILABLE, image="", description="Ciekawe to auto", last_geo_lat=Decimal('50.669395'), last_geo_lon=Decimal('17.967258')).save()
+CarDetails(user=user, car=car[1], number_plate="OP944cd", mileage="74000", status=CarDetails.AVAILABLE, image="", description="Ciekawe to auto", last_geo_lat=Decimal('50.659546'), last_geo_lon=Decimal('17.981765')).save()
+CarDetails(user=user, car=car[2], number_plate="OST454ac", mileage="224000", status=CarDetails.AVAILABLE, image="", description="Ciekawe to auto", last_geo_lat=Decimal('50.666400'), last_geo_lon=Decimal('17.985564')).save()
+CarDetails(user=user, car=car[3], number_plate="OST944ac", mileage="184000", status=CarDetails.AVAILABLE, image="", description="Ciekawe to auto", last_geo_lat=Decimal('50.671830'), last_geo_lon=Decimal('17.926941')).save()
+CarDetails(user=user, car=car[4], number_plate="OST441ac", mileage="134000", status=CarDetails.AVAILABLE, image="", description="Ciekawe to auto", last_geo_lat=Decimal('50.697366'), last_geo_lon=Decimal('17.928816')).save()
+
+#Offer objects creation
+car_details=CarDetails.objects.all()
+#Audi
+Offer(user=user, car_details=car_details[0], status='running', value_per_minute=Decimal('0.15'), add_date=date.today()).save()
+#Skoda
+Offer(user=user, car_details=car_details[1], status='running', value_per_minute=Decimal('0.25'), add_date=date.today()).save()
+#Opel
+Offer(user=user, car_details=car_details[2], status='running', value_per_minute=Decimal('0.12'), add_date=date.today()).save()
+#Volkswagen
+Offer(user=user, car_details=car_details[3], status='running', value_per_minute=Decimal('0.32'), add_date=date.today()).save()
+#Fiat
+Offer(user=user, car_details=car_details[4], status='running', value_per_minute=Decimal('0.09'), add_date=date.today()).save()
