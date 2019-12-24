@@ -1,8 +1,7 @@
 Vue.component('vehicle-card', {
     template: html`
         <v-card
-            class="d-flex"
-            max-width="128"
+            max-width="250"
         >
             <v-img
                 class="white--text align-end"
@@ -26,13 +25,6 @@ Vue.component('vehicle-card', {
                     text
                 >
                     Zarezerwuj
-                </v-btn>
-    
-                <v-btn
-                    color="orange"
-                    text
-                >
-                    Pokaż na mapie
                 </v-btn>
             </v-card-actions>
         </v-card>
