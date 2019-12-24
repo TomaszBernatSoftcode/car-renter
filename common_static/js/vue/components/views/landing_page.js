@@ -117,17 +117,15 @@ Vue.component('landing-page', {
             <v-container fluid>
                 <v-row
                     align="center"
-                    justify="start"
+                    justify="center"
                 >
                     <v-col :class="'d-flex justify-center'" align-self="center" cols="12" sm="6" md="4" lg="3" v-for="vehicle in firstLineVehicles">
                         <vehicle-card></vehicle-card>
                     </v-col>
-                </v-row>
-                <v-row
-                    align="center"
-                    justify="end"
-                >
                     <v-col :class="'d-flex justify-center'" align-self="center" cols="12" sm="6" md="4" lg="3" v-for="vehicle in secondLineVehicles">
+                        <vehicle-card></vehicle-card>
+                    </v-col>
+                    <v-col :class="'d-flex justify-center'" align-self="center" cols="12" sm="6" md="4" lg="3" v-for="vehicle in thirdLineVehicles">
                         <vehicle-card></vehicle-card>
                     </v-col>
                 </v-row>
@@ -137,8 +135,9 @@ Vue.component('landing-page', {
     props: {},
     data: function () {
         return {
-            firstLineVehicles: [1,2,3],
-            secondLineVehicles: [1,2,3],
+            firstLineVehicles: [1,2],
+            secondLineVehicles: [1,2],
+            thirdLineVehicles: [1,2],
         }
     },
     computed: {},
