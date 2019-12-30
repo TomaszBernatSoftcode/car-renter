@@ -1,4 +1,5 @@
 Vue.component('vehicle-card', {
+    delimiters: ['[[', ']]'],
     template: html`
         <v-card
             max-width="250"

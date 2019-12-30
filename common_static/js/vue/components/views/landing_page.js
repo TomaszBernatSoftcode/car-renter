@@ -39,57 +39,14 @@ Vue.component('landing-page', {
                 >
                     <v-col 
                         :class="'d-flex justify-center'" 
-                        align-self="center" cols="12" md="4">
-                        <v-card class="elevation-0 transparent">
-                            <v-card-text class="text-center">
-                                <v-icon x-large class="blue--text text--lighten-2">mdi-watch</v-icon>
-                            </v-card-text>
-                            <v-card-title primary-title class="layout justify-center">
-                                <div class="headline text-xs-center">Postaw na punktualność</div>
-                            </v-card-title>
-                            <v-card-text>
-                                Show your stuff to the whole community of Endorfine not only to your mum or your friends. 
-                                We love making good content viral. In this moment Endorfine is used by artists who are 
-                                not famous but that want to share their works to the world. 
-                                Unfortunately with other social networks this is hard, slow and sometime expensive.
-                            </v-card-text>
-                        </v-card>
-                    </v-col>
-                    <v-col 
-                        :class="'d-flex justify-center'" 
-                        align-self="center" cols="12" md="4">
-                        <v-card class="elevation-0 transparent">
-                            <v-card-text class="text-center">
-                                <v-icon x-large class="blue--text text--lighten-2">mdi-seat</v-icon>
-                            </v-card-text>
-                            <v-card-title primary-title class="layout justify-center">
-                                <div class="headline text-xs-center">Wybierz wygodę</div>
-                            </v-card-title>
-                            <v-card-text>
-                                Show your stuff to the whole community of Endorfine not only to your mum or your friends. 
-                                We love making good content viral. In this moment Endorfine is used by artists who are 
-                                not famous but that want to share their works to the world. 
-                                Unfortunately with other social networks this is hard, slow and sometime expensive.
-                            </v-card-text>
-                        </v-card>
-                    </v-col>
-                    <v-col 
-                        :class="'d-flex justify-center'" 
-                        align-self="center" cols="12" md="4">
-                        <v-card class="elevation-0 transparent">
-                            <v-card-text class="text-center">
-                                <v-icon x-large class="blue--text text--lighten-2">mdi-currency-usd-off</v-icon>
-                            </v-card-text>
-                            <v-card-title primary-title class="layout justify-center">
-                                <div class="headline text-xs-center">Zapomnij o utrzymaniu auta</div>
-                            </v-card-title>
-                            <v-card-text>
-                                Show your stuff to the whole community of Endorfine not only to your mum or your friends. 
-                                We love making good content viral. In this moment Endorfine is used by artists who are 
-                                not famous but that want to share their works to the world. 
-                                Unfortunately with other social networks this is hard, slow and sometime expensive.
-                            </v-card-text>
-                        </v-card>
+                        align-self="center" cols="12" md="4"
+                        v-for="card in infoCards"
+                    >
+                        <presentation-text-card
+                            :icon-name="card.iconName"
+                            :header-text="card.headerText"
+                            :main-text="card.mainText"
+                        ></presentation-text-card>
                     </v-col>
                 </v-row>
             </v-container>
@@ -119,13 +76,7 @@ Vue.component('landing-page', {
                     align="center"
                     justify="center"
                 >
-                    <v-col :class="'d-flex justify-center'" align-self="center" cols="12" sm="6" md="4" lg="3" v-for="vehicle in firstLineVehicles">
-                        <vehicle-card></vehicle-card>
-                    </v-col>
-                    <v-col :class="'d-flex justify-center'" align-self="center" cols="12" sm="6" md="4" lg="3" v-for="vehicle in secondLineVehicles">
-                        <vehicle-card></vehicle-card>
-                    </v-col>
-                    <v-col :class="'d-flex justify-center'" align-self="center" cols="12" sm="6" md="4" lg="3" v-for="vehicle in thirdLineVehicles">
+                    <v-col :class="'d-flex justify-center'" align-self="center" cols="12" sm="6" md="4" lg="3" v-for="vehicle in latestVehicles">
                         <vehicle-card></vehicle-card>
                     </v-col>
                 </v-row>
@@ -135,16 +86,68 @@ Vue.component('landing-page', {
     props: {},
     data: function () {
         return {
-            firstLineVehicles: [1,2],
-            secondLineVehicles: [1,2],
-            thirdLineVehicles: [1,2],
+            latestVehicles: [],
+            vehiclesPosition: [],
+            infoCards: [
+                {
+                    iconName: 'mdi-watch',
+                    headerText: 'Postaw na punktualność',
+                    mainText: '' +
+                        'Show your stuff to the whole community of Endorfine not only to your mum or your friends. ' +
+                        'We love making good content viral. ' +
+                        'In this moment Endorfine is used by artists who are ' +
+                        'not famous but that want to share their works to the world. ' +
+                        'Unfortunately with other social networks this is hard, slow and sometime expensive.'
+                },
+                {
+                    iconName: 'mdi-seat',
+                    headerText: 'Wybierz wygodę',
+                    mainText: '' +
+                        'Show your stuff to the whole community of Endorfine not only to your mum or your friends. ' +
+                        'We love making good content viral. ' +
+                        'In this moment Endorfine is used by artists who are ' +
+                        'not famous but that want to share their works to the world. ' +
+                        'Unfortunately with other social networks this is hard, slow and sometime expensive.',
+                },
+                {
+                    iconName: 'mdi-currency-usd-off',
+                    headerText: 'Zapomnij o utrzymaniu auta',
+                    mainText: '' +
+                        'Show your stuff to the whole community of Endorfine not only to your mum or your friends. ' +
+                        'We love making good content viral. ' +
+                        'In this moment Endorfine is used by artists who are ' +
+                        'not famous but that want to share their works to the world. ' +
+                        'Unfortunately with other social networks this is hard, slow and sometime expensive.',
+                }
+            ]
         }
     },
     computed: {},
     watch: {},
+    created: function () {
+        this.fetchLatestVehicles()
+        this.fetchVehiclesPosition()
+    },
     methods: {
-        fetchVehicles: function () {
+        fetchLatestVehicles: function () {
+            // Urls['namespace:namespace']()
+            return this.$http.get()
+                .then(function (response) {
 
+                })
+                .catch(function (error) {
+
+                })
+        },
+        fetchVehiclesPosition: function () {
+            // Urls['namespace:namespace']()
+            return this.$http.get()
+                .then(function (response) {
+
+                })
+                .catch(function (error) {
+
+                })
         }
     },
 });
