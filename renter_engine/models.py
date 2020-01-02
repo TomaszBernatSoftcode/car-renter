@@ -77,9 +77,9 @@ class Car(models.Model):
     CAR_TYPES_CHOICES = [
         (SEDAN, 'Sedan'),
         (HATCHBACK, 'Hatchback'),
-        (SUV, 'suv'),
-        (KOMBI, 'kombi'),
-        (SMART, 'smart')
+        (SUV, 'Suv'),
+        (KOMBI, 'Kombi'),
+        (SMART, 'Smart')
     ]
 
     GASOLINE = 'gasoline'
@@ -137,6 +137,14 @@ class Car(models.Model):
         )
 
 
+def car_directory_path(instance, filename):
+    return 'cars/{brand}/{model}/{filename}'.format(
+        brand=instance.car.brand,
+        model=instance.car.model,
+        filename=filename
+    )
+
+
 class CarDetails(models.Model):
     AVAILABLE = 'available'
     RENTED = 'rented'
@@ -163,7 +171,7 @@ class CarDetails(models.Model):
         verbose_name='Średnie spalanie'
     )
     status = models.CharField(max_length=9, choices=CAR_STATUS_CHOICES, verbose_name='Status pojazdu')
-    image = models.ImageField()
+    image = models.ImageField(upload_to=car_directory_path, blank=True, max_length=2000)
     description = models.TextField()
     last_geo_lat = models.DecimalField(max_digits=10, decimal_places=7, null=False)
     last_geo_lon = models.DecimalField(max_digits=10, decimal_places=7, null=False)
