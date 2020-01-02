@@ -82,8 +82,24 @@
                     {% if user.is_authenticated %}
                         <v-btn class="ma-2" text small color="white">Przejdź do panelu</v-btn>
                     {% else %}
-                        <v-btn class="ma-2" text small color="white">Logowanie</v-btn>
-                        <v-btn class="ma-2" text small color="white">Rejestracja</v-btn>
+                        <v-btn class="ma-2" text small color="white">
+                            <v-tooltip bottom v-if="areNavBarLabelsHidden">
+                                <template v-slot:activator="{ on }">
+                                    <v-icon v-on="on">mdi-login</v-icon>
+                                </template>
+                                Logowanie
+                            </v-tooltip>
+                            <span v-show="!areNavBarLabelsHidden">Logowanie</span>
+                        </v-btn>
+                        <v-btn class="ma-2" text small color="white">
+                            <v-tooltip bottom v-if="areNavBarLabelsHidden">
+                                <template v-slot:activator="{ on }">
+                                    <v-icon v-on="on">mdi-account-plus</v-icon>
+                                </template>
+                                Rejestracja
+                            </v-tooltip>
+                            <span v-show="!areNavBarLabelsHidden">Rejestracja</span>
+                        </v-btn>
                     {% endif %}
                 {% endif %}
             </v-app-bar>

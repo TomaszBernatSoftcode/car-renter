@@ -5,16 +5,22 @@ new Vue({
     data: {
         drawer: null,
         source: '',
-        user: {}
+        user: {},
+        labelsHidden: false,
     },
     computed: {
         isUserFetched: function () {
             return !_.isEmpty(this.user)
-        }
+        },
+        areNavBarLabelsHidden: function () {
+            return this.labelsHidden
+        },
     },
     watch: {
     },
     created: function () {
+        window.addEventListener('resize', this.handleResize)
+        this.handleResize();
     },
     methods: {
         validateUserDetails: function () {
@@ -25,6 +31,13 @@ new Vue({
         },
         logOutUser: function () {
 
+        },
+        handleResize: function () {
+            var windowWidth = window.innerWidth
+                || document.documentElement.clientWidth
+                || document.body.clientWidth;
+
+            this.labelsHidden = windowWidth <= 450;
         }
     }
 });

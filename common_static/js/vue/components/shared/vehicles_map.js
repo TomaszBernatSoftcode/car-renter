@@ -10,7 +10,11 @@ Vue.component('vehicles-map', {
                 align-self="center" 
                 cols="12"
             >
-                <v-card id="mapid" style="z-index: 0; height: 400px; width: 600px;">
+                <v-card 
+                    id="mapid" style="z-index: 0;"
+                    :height="mapHeight"
+                    :width="mapWidth"
+                >
                 </v-card>
             </v-col>
         </v-row>
@@ -24,6 +28,21 @@ Vue.component('vehicles-map', {
             type: Number,
             required: true,
         },
+        zoom: {
+            type: Number,
+            default: 6
+        },
+        centerPoint: {
+            type: Object,
+            default: {
+                'lat': 51.818139,
+                'lon': 19.534701
+            }
+        },
+        markersPositions: {
+            type: Array,
+            default: []
+        }
     },
     data: function() {
         return {
@@ -37,32 +56,40 @@ Vue.component('vehicles-map', {
                     features: [],
                 },
             ],
+            correctMapCenter: {},
+            correctMarkers: [],
+            correctZoom: 12
         }
     },
     computed: {
     },
     watch: {
+        markersPositions: {
+            immediate:true,
+            handler: function (newValue) {
+                if (!_.isEmpty(newValue) && !_.isEmpty(this.map)) {
+                    _.forEach(newValue, function (car) {
+                        var marker = L.marker([car.lat, car.lon]).addTo(this.map)
+                        marker.bindPopup("<b>" + car.name + "</b>")
+                    }.bind(this))
+                }
+            }
+        }
     },
     mounted: function () {
+        this.map = L.map('mapid')
         this.initMap()
     },
     methods: {
         initMap: function () {
-            var mymap = L.map('mapid').setView([51.505, -0.09], 13);
+            this.map.setView([this.centerPoint.lat, this.centerPoint.lon], this.zoom)
 
             L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
-                attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
                 maxZoom: 18,
                 id: 'mapbox/streets-v11',
                 accessToken: 'pk.eyJ1IjoidG9tYmVyOTk2NiIsImEiOiJjazRqbXl5amUwNWM2M2t0OXV4bjZyMGd4In0.934B2RmkwBbwRoSXPVN3OA'
-            }).addTo(mymap);
+            }).addTo(this.map);
 
         },
-        initLayers: function () {
-
-        },
-        fetchCityBoundaries: function () {
-
-        }
     },
 });

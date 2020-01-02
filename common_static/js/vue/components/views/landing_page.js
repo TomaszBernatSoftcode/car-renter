@@ -29,7 +29,13 @@ Vue.component('landing-page', {
             </v-container>
             <!-- map with vehicles location -->
             <v-container fluid>
-                <vehicles-map></vehicles-map>
+                <vehicles-map
+                    :map-height="400"
+                    :map-width="600"
+                    :zoom="13"
+                    :center-point="mapCenterPoint"
+                    :markers-positions="vehiclesPosition"
+                ></vehicles-map>
             </v-container>
             <!-- pros of account creation -->
             <v-container fluid>
@@ -40,7 +46,8 @@ Vue.component('landing-page', {
                     <v-col 
                         :class="'d-flex justify-center'" 
                         align-self="center" cols="12" md="4"
-                        v-for="card in infoCards"
+                        v-for="(card, index) in infoCards"
+                        :key="'card-' + index"
                     >
                         <presentation-text-card
                             :icon-name="card.iconName"
@@ -53,7 +60,7 @@ Vue.component('landing-page', {
             <!-- register button -->
             <v-container fluid pa-0>
                 <v-parallax 
-                    src="https://cdn.vuetifyjs.com/images/backgrounds/vbanner.jpg" 
+                    src="/media/landing_page/registration_background.jpeg" 
                     dark 
                     height="400"
                 >
@@ -76,8 +83,20 @@ Vue.component('landing-page', {
                     align="center"
                     justify="center"
                 >
-                    <v-col :class="'d-flex justify-center'" align-self="center" cols="12" sm="6" md="4" lg="3" v-for="vehicle in latestVehicles">
-                        <vehicle-card></vehicle-card>
+                    <v-col 
+                        :class="'d-flex justify-center'" 
+                        align-self="center" 
+                        cols="12" sm="6" md="4" lg="3" 
+                        v-for="vehicle in latestVehicles"
+                        :key="'vehicle-' + vehicle.id"
+                    >
+                        <vehicle-card
+                            v-if="vehicle.status === 'available'"
+                            :title="getVehicleTitle(vehicle)"
+                            :sub-title="vehicle.type"
+                            :details="compressVehicleDetails(vehicle)"
+                            :is-reservation-btn-enabled="false"
+                        ></vehicle-card>
                     </v-col>
                 </v-row>
             </v-container>
@@ -88,6 +107,10 @@ Vue.component('landing-page', {
         return {
             latestVehicles: [],
             vehiclesPosition: [],
+            mapCenterPoint: {
+                'lat': 50.675676,
+                'lon': 17.921758
+            },
             infoCards: [
                 {
                     iconName: 'mdi-watch',
@@ -131,23 +154,35 @@ Vue.component('landing-page', {
     methods: {
         fetchLatestVehicles: function () {
             // Urls['namespace:namespace']()
-            return this.$http.get()
+            return this.$http.get("http://localhost:3000/offers")
                 .then(function (response) {
-
+                    this.latestVehicles = response.data
                 })
                 .catch(function (error) {
-
+                    console.log(error.message)
                 })
         },
         fetchVehiclesPosition: function () {
             // Urls['namespace:namespace']()
-            return this.$http.get()
+            return this.$http.get("http://localhost:3000/geocords")
                 .then(function (response) {
-
+                    this.vehiclesPosition = response.data
                 })
                 .catch(function (error) {
-
+                    console.log(error.message)
                 })
+        },
+        getVehicleTitle: function (vehicle) {
+            return vehicle.brand + ' ' + vehicle.model
+        },
+        compressVehicleDetails: function (vehicle) {
+            return {
+                'personCapacity': vehicle.person_capacity,
+                'bootCapacity': vehicle.boot_capacity,
+                'fuelType': vehicle.fuel_type,
+                'gearboxType': vehicle.gearbox_type,
+                'price': vehicle.price
+            }
         }
     },
 });
