@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_js_reverse',
     'renter_engine.apps.RenterEngineConfig',
 ]
 
@@ -82,7 +83,7 @@ WSGI_APPLICATION = 'renter.wsgi.application'
 REST_FRAMEWORK = {
     'DATETIME_FORMAT': '%Y-%m-%dT%H:%M',
     'DATE_FORMAT': '%Y-%m-%d',
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 100,
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.BasicAuthentication',
@@ -131,6 +132,14 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+# JS REVERSE CONFIG
+JS_REVERSE_JS_VAR_NAME = 'Urls'
+JS_REVERSE_JS_GLOBAL_OBJECT_NAME = 'this'
+JS_REVERSE_JS_MINIFY = False
+JS_REVERSE_EXCLUDE_NAMESPACES = ['admin', ]
+JS_REVERSE_SCRIPT_PREFIX = ''
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
@@ -154,3 +163,5 @@ STATICFILES_DIRS = [
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'

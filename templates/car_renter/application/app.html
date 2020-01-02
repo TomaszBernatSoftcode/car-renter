@@ -6,9 +6,10 @@
             <!-- Kontent nawigacji -->
             {% if renter_panel or map_panel or user_panel %}
                 <v-navigation-drawer
-                        v-model="drawer"
-                        app
-                        right
+                    v-model="drawer"
+                    app
+                    disable-resize-watcher
+                    disable-route-watcher
                 >
                     <template
                         v-if="isUserFetched"
@@ -67,47 +68,72 @@
             {% endif %}
             <!-- Render nawigacji -->
             <v-app-bar
-                    app
-                    color="cyan"
-                    dark
-                    fixed
+                app
+                color="primary"
+                clipped-left
+                dark
             >
-                <v-spacer />
-
-                <v-toolbar-title>Rent&Go</v-toolbar-title>
                 {% if renter_panel or map_panel or user_panel %}
                     <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+                {% endif %}
+                <v-toolbar-title>Rent&Go</v-toolbar-title>
+                {% if landing_page %}
+                    <v-spacer></v-spacer>
+                    {% if user.is_authenticated %}
+                        <v-btn class="ma-2" text small color="white">Przejdź do panelu</v-btn>
+                    {% else %}
+                        <v-btn class="ma-2" text small color="white">
+                            <v-tooltip bottom v-if="areNavBarLabelsHidden">
+                                <template v-slot:activator="{ on }">
+                                    <v-icon v-on="on">mdi-login</v-icon>
+                                </template>
+                                Logowanie
+                            </v-tooltip>
+                            <span v-show="!areNavBarLabelsHidden">Logowanie</span>
+                        </v-btn>
+                        <v-btn class="ma-2" text small color="white">
+                            <v-tooltip bottom v-if="areNavBarLabelsHidden">
+                                <template v-slot:activator="{ on }">
+                                    <v-icon v-on="on">mdi-account-plus</v-icon>
+                                </template>
+                                Rejestracja
+                            </v-tooltip>
+                            <span v-show="!areNavBarLabelsHidden">Rejestracja</span>
+                        </v-btn>
+                    {% endif %}
                 {% endif %}
             </v-app-bar>
 
             <!-- Kontent strony -->
-            <v-content>
+            {% if landing_page %}
+                <landing-page></landing-page>
+            {% elif renter_panel %}
+                <renter-panel></renter-panel>
+            {% elif map_panel %}
+                <map-panel></map-panel>
+            {% elif user_panel %}
+                <user-panel></user-panel>
+            {% else %}
+                <!-- TODO: zrobic redirect do not found -->
+            {% endif %}
+            {% if renter_panel or map_panel or user_panel %}
+                <v-footer
+                        color="primary"
+                        app
+                >
+                    <v-spacer />
 
-                {% if ladning_page %}
-                    <landing-page></landing-page>
-                {% elif renter_panel %}
-                    <renter-panel></renter-panel>
-                {% elif map_panel %}
-                    <map-panel></map-panel>
-                {% elif user_panel %}
-                    <user-panel></user-panel>
-                {% else %}
-                    <!-- TODO: zrobic redirect do not found -->
-                {% endif %}
-
-            </v-content>
-
-            <v-footer
-                    color="cyan"
-                    app
-            >
-                <v-spacer />
-
-                <span class="white--text">&copy; 2019</span>
-            </v-footer>
+                    <span class="white--text">&copy; 2019</span>
+                </v-footer>
+            {% endif %}
         </v-app>
     </div>
     <!-- shared components -->
+    <script src="{% static "js/vue/components/shared/vehicle_card.js" %}"></script>
+    <script src="{% static "js/vue/components/shared/vehicles_cards_container.js" %}"></script>
+    <script src="{% static "js/vue/components/shared/vehicles_map.js" %}"></script>
+    <!-- landing page components -->
+    <script src="{% static "js/vue/components/landing_page/presentation_text_card.js" %}"></script>
     <!-- view components -->
     <script src="{% static "js/vue/components/views/landing_page.js" %}"></script>
     <script src="{% static "js/vue/components/views/map_panel.js" %}"></script>

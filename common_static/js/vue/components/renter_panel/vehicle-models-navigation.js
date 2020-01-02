@@ -1,4 +1,5 @@
 Vue.component('vehicle-models-navigation', {
+    delimiters: ['[[', ']]'],
     template: html`
         <v-list
             style="max-height: 100px;"

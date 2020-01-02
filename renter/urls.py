@@ -17,6 +17,8 @@ from django.contrib import admin
 from django.urls import path, include
 from renter_engine.views import landing_page, renter_panel, user_panel, map_panel
 from django.contrib.auth import views as auth_views
+from django.conf import settings
+from django.conf.urls.static import static
 
 
 urlpatterns = [
@@ -29,3 +31,7 @@ urlpatterns = [
     path('user-panel', user_panel, name='user_panel'),
     path('map', map_panel, name='map'),
 ]
+
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
