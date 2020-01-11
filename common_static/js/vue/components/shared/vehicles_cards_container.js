@@ -1,4 +1,5 @@
 Vue.component('vehicles-cards-container', {
+    delimiters: ['[[', ']]'],
     template: html`
         <v-card
             loading="!areVehiclesReady"
@@ -45,7 +46,7 @@ Vue.component('vehicles-cards-container', {
                                     :key="i"
                                     @click="sortVehicles(item.value)"
                                 >
-                                    <v-list-item-title>{{ item.title }}</v-list-item-title>
+                                    <v-list-item-title>[[ item.title ]]</v-list-item-title>
                                 </v-list-item>
                             </v-list>
                         </v-menu>    
