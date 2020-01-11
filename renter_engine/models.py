@@ -4,6 +4,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from datetime import date
 from renter_engine.model_fields_validators import NAME_PATTERN, DETAILED_NAME_PATTERN,\
     PHONE_NUMBER_PATTERN, POSTAL_CODE_PATTERN, PL_NUMBER_PLATE_PATTERN
+from decimal import Decimal, ROUND_HALF_UP
 
 
 class City(models.Model):
@@ -32,7 +33,7 @@ class Address(models.Model):
     city = models.ForeignKey('City', null=True, related_name='addresses', on_delete=models.SET_NULL, verbose_name='Miasto')
     street = models.CharField(max_length=24, validators=[NAME_PATTERN, ], verbose_name='Ulica')
     house_number = models.CharField(max_length=12, validators=[DETAILED_NAME_PATTERN, ], verbose_name='Numer domu')
-    apartment_number = models.CharField(max_length=12, validators=[DETAILED_NAME_PATTERN, ], verbose_name='Numer mieszkania')
+    apartment_number = models.CharField(blank=True, null=False, max_length=12, validators=[DETAILED_NAME_PATTERN, ], verbose_name='Numer mieszkania')
     postal_code = models.CharField(max_length=12, validators=[POSTAL_CODE_PATTERN, ], verbose_name='Kod pocztowy')
     creation_date = models.DateField(default=date.today, verbose_name='Data utworzenia adresu')
 
@@ -136,6 +137,10 @@ class Car(models.Model):
             type=self.type, creation_date=self.creation_date
         )
 
+    @property
+    def name(self):
+        return '{brand} {model} - {type}'.format(brand=self.brand, model=self.model, type=self.type)
+
 
 def car_directory_path(instance, filename):
     return 'cars/{brand}/{model}/{filename}'.format(
@@ -210,6 +215,10 @@ class Offer(models.Model):
         return '{car_details} {value_per_minute}/min - {status}'.format(
             car_details=self.car_details, value_per_minute=self.value_per_minute, status=self.status
         )
+
+    @property
+    def value_per_hour(self):
+        return Decimal(self.value_per_minute * Decimal('60.0')).quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
 
 
 class CarRent(models.Model):
