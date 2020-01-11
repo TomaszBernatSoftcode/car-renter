@@ -68,9 +68,9 @@ Vue.component('vehicles-map', {
             immediate:true,
             handler: function (newValue) {
                 if (!_.isEmpty(newValue) && !_.isEmpty(this.map)) {
-                    _.forEach(newValue, function (car) {
-                        var marker = L.marker([car.lat, car.lon]).addTo(this.map)
-                        marker.bindPopup("<b>" + car.name + "</b>")
+                    _.forEach(newValue, function (carData) {
+                        var marker = L.marker([carData.last_geo_lat, carData.last_geo_lon]).addTo(this.map)
+                        marker.bindPopup("<b>" + carData.car.name + "</b>")
                     }.bind(this))
                 }
             }

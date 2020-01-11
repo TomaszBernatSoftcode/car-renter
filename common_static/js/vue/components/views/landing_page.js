@@ -70,7 +70,10 @@ Vue.component('landing-page', {
                     >
                         <v-col class="text-center" cols="12">
                             <h1 class="display-1 font-weight-thin mb-4">Lorem ipsum dolor sit amet.</h1>
-                            <v-btn class="blue lighten-2 mt-5" dark large href="#">
+                            <v-btn 
+                                class="blue darken-1 mt-5" dark large
+                                @click="openRegistrationPage()"    
+                            >
                                 Utwórz konto
                             </v-btn>
                       </v-col>
@@ -87,14 +90,13 @@ Vue.component('landing-page', {
                         :class="'d-flex justify-center'" 
                         align-self="center" 
                         cols="12" sm="6" md="4" lg="3" 
-                        v-for="vehicle in latestVehicles"
-                        :key="'vehicle-' + vehicle.id"
+                        v-for="offer in latestOffers"
+                        :key="'offer-' + offer.id"
                     >
                         <vehicle-card
-                            v-if="vehicle.status === 'available'"
-                            :title="getVehicleTitle(vehicle)"
-                            :sub-title="vehicle.type"
-                            :details="compressVehicleDetails(vehicle)"
+                            :title="getVehicleTitle(offer)"
+                            :sub-title="offer.car_details.car.type"
+                            :details="compressVehicleDetails(offer)"
                             :is-reservation-btn-enabled="false"
                         ></vehicle-card>
                     </v-col>
@@ -105,7 +107,7 @@ Vue.component('landing-page', {
     props: {},
     data: function () {
         return {
-            latestVehicles: [],
+            latestOffers: [],
             vehiclesPosition: [],
             mapCenterPoint: {
                 'lat': 50.675676,
@@ -148,41 +150,42 @@ Vue.component('landing-page', {
     computed: {},
     watch: {},
     created: function () {
-        this.fetchLatestVehicles()
+        this.fetchLatestOffers()
         this.fetchVehiclesPosition()
     },
     methods: {
-        fetchLatestVehicles: function () {
-            // Urls['namespace:namespace']()
-            return this.$http.get("http://localhost:3000/offers")
+        fetchLatestOffers: function () {
+            return this.$http.get(Urls['inner_api:offers']())
                 .then(function (response) {
-                    this.latestVehicles = response.data
+                    this.latestOffers = response.data.results
                 })
                 .catch(function (error) {
                     console.log(error.message)
                 })
         },
         fetchVehiclesPosition: function () {
-            // Urls['namespace:namespace']()
-            return this.$http.get("http://localhost:3000/geocords")
+            return this.$http.get(Urls['inner_api:cars_latest_locations']())
                 .then(function (response) {
-                    this.vehiclesPosition = response.data
+                    this.vehiclesPosition = response.data.results
                 })
                 .catch(function (error) {
                     console.log(error.message)
                 })
         },
         getVehicleTitle: function (vehicle) {
-            return vehicle.brand + ' ' + vehicle.model
+            return vehicle.car_details.car.brand + ' ' + vehicle.car_details.car.model
         },
-        compressVehicleDetails: function (vehicle) {
+        compressVehicleDetails: function (offer) {
             return {
-                'personCapacity': vehicle.person_capacity,
-                'bootCapacity': vehicle.boot_capacity,
-                'fuelType': vehicle.fuel_type,
-                'gearboxType': vehicle.gearbox_type,
-                'price': vehicle.price
+                'personCapacity': offer.car_details.car.person_capacity,
+                'bootCapacity': offer.car_details.car.boot_capacity,
+                'fuelType': offer.car_details.car.fuel_type,
+                'gearboxType': offer.car_details.car.gearbox_type,
+                'price': offer.value_per_hour
             }
+        },
+        openRegistrationPage: function () {
+            window.open(Urls['registration_page'](), '_self')
         }
     },
 });

@@ -77,12 +77,24 @@
                     <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
                 {% endif %}
                 <v-toolbar-title>Rent&Go</v-toolbar-title>
-                {% if landing_page %}
+                {% if landing_page or registration_page %}
                     <v-spacer></v-spacer>
                     {% if user.is_authenticated %}
-                        <v-btn class="ma-2" text small color="white">Przejdź do panelu</v-btn>
+                        <v-btn
+                            class="ma-2"
+                            text small
+                            color="white"
+                            @click="openRenterPanel()"
+                        >
+                            Przejdź do panelu
+                        </v-btn>
                     {% else %}
-                        <v-btn class="ma-2" text small color="white">
+                        <v-btn
+                            class="ma-2"
+                            text small
+                            color="white"
+                            @click="openLoginPage()"
+                        >
                             <v-tooltip bottom v-if="areNavBarLabelsHidden">
                                 <template v-slot:activator="{ on }">
                                     <v-icon v-on="on">mdi-login</v-icon>
@@ -91,14 +103,28 @@
                             </v-tooltip>
                             <span v-show="!areNavBarLabelsHidden">Logowanie</span>
                         </v-btn>
-                        <v-btn class="ma-2" text small color="white">
+                        <v-btn
+                            class="ma-2"
+                            text small
+                            color="white"
+                            @click="openRegistrationPage()"
+                        >
                             <v-tooltip bottom v-if="areNavBarLabelsHidden">
                                 <template v-slot:activator="{ on }">
-                                    <v-icon v-on="on">mdi-account-plus</v-icon>
+                                    <v-icon
+                                        v-on="on"
+                                        @click="openRegistrationPage()"
+                                    >
+                                        mdi-account-plus
+                                    </v-icon>
                                 </template>
                                 Rejestracja
                             </v-tooltip>
-                            <span v-show="!areNavBarLabelsHidden">Rejestracja</span>
+                            <span
+                                v-show="!areNavBarLabelsHidden"
+                            >
+                                Rejestracja
+                            </span>
                         </v-btn>
                     {% endif %}
                 {% endif %}
@@ -107,6 +133,8 @@
             <!-- Kontent strony -->
             {% if landing_page %}
                 <landing-page></landing-page>
+            {% elif registration_page %}
+                <registration-page></registration-page>
             {% elif renter_panel %}
                 <renter-panel></renter-panel>
             {% elif map_panel %}
@@ -126,6 +154,35 @@
                     <span class="white--text">&copy; 2019</span>
                 </v-footer>
             {% endif %}
+            <v-overlay
+                :absolute="absolute"
+                :opacity="opacity"
+                :value="overlay"
+            >
+                <v-row justify="center">
+                    <v-col
+                        cols="12"
+                        :class="'d-flex justify-center'"
+                        align-self="center"
+                    >
+                        <p class="mb-4">
+                            [[ overlayMessage ]]
+                        </p>
+                    </v-col>
+                    <v-col
+                        cols="12"
+                        :class="'d-flex justify-center'"
+                        align-self="center"
+                    >
+                        <v-btn
+                            color="success"
+                            @click="executeOverlayAction()"
+                        >
+                            [[ overlayActionLabel ]]
+                        </v-btn>
+                    </v-col>
+                </v-row>
+            </v-overlay>
         </v-app>
     </div>
     <!-- shared components -->
@@ -136,6 +193,7 @@
     <script src="{% static "js/vue/components/landing_page/presentation_text_card.js" %}"></script>
     <!-- view components -->
     <script src="{% static "js/vue/components/views/landing_page.js" %}"></script>
+    <script src="{% static "js/vue/components/views/registration_page.js" %}"></script>
     <script src="{% static "js/vue/components/views/map_panel.js" %}"></script>
     <script src="{% static "js/vue/components/views/renter_panel.js" %}"></script>
     <script src="{% static "js/vue/components/views/user_panel.js" %}"></script>

@@ -1,10 +1,17 @@
 {% load static %}
+{% load js_reverse %}
 <!DOCTYPE html>
 <html lang="pl">
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
         <meta name="robots" content="noindex,nofollow,noimageindex,noarchive,nosnippet,noyaca">
+
+{#        <script type="text/javascript" src="{% if DEBUG %}/jsreverse/urls.js{% else %}{{ STATIC_URL }}django_js_reverse/js/reverse.min.js{% endif %}"></script>#}
+{#        <script src="{% url 'js_reverse' %}" type="text/javascript"></script>#}
+        <script type="text/javascript" charset="utf-8">
+            {% js_reverse_inline %}
+        </script>
 
         <title>Rent&Go</title>
 
