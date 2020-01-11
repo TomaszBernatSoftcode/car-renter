@@ -32,8 +32,30 @@ Vue.component('registration-page', {
                             class="mt-8"
                         >
                             <v-text-field
+                                v-model="userName"
+                                :counter="150"
+                                :rules="userNameRules"
+                                label="Nazwa użytkownika"
+                                required
+                                class="mb-4"
+                                :disabled="isFormDisabled"
+                                :loading="isFormDisabled"
+                            ></v-text-field>
+                            
+                            <v-text-field
+                                v-model="password"
+                                :counter="128"
+                                :rules="passwordRules"
+                                label="Hasło"
+                                required
+                                class="mb-4"
+                                :disabled="isFormDisabled"
+                                :loading="isFormDisabled"
+                            ></v-text-field>
+                            
+                            <v-text-field
                                 v-model="name"
-                                :counter="24"
+                                :counter="30"
                                 :rules="nameRules"
                                 label="Imię"
                                 required
@@ -44,7 +66,7 @@ Vue.component('registration-page', {
                             
                             <v-text-field
                                 v-model="lastName"
-                                :counter="24"
+                                :counter="150"
                                 :rules="lastNameRules"
                                 label="Nazwisko"
                                 required
@@ -158,6 +180,35 @@ Vue.component('registration-page', {
             hasRegistrationErrorOccurred: false,
             valid: true,
             isFormDisabled: false,
+            userName: '',
+            userNameRules: [
+                function (value) {
+                    return !!value || 'Nazwa użytkownika jest wymagana.'
+                },
+                function (value) {
+                    if (
+                        value &&
+                        value.length >= 3 && value.length <= 150 &&
+                        /^\w{3,}(\-\w{1,})*$/.test(value) &&
+                        this.isNameReasonable(value)
+                    ) return true;
+                    return 'Nazwa użytkownika musi zawierać od 3 do 150 znaków. Bez znaków specjalnych i białych znaków. Np. adam-nowak'
+                }.bind(this)
+            ],
+            password: '',
+            passwordRules: [
+                function (value) {
+                    return !!value || 'Hasło jest wymagana.'
+                },
+                function (value) {
+                    if (
+                        value &&
+                        value.length >= 8 && value.length <= 128 &&
+                        /^\S{8,128}$/.test(value)
+                    ) return true;
+                    return 'Hasło musi zawierać od 8 do 128 znaków. Bez białych znaków. Np. adam123!@'
+                }.bind(this)
+            ],
             name: '',
             nameRules: [
                 function (value) {
@@ -165,11 +216,12 @@ Vue.component('registration-page', {
                 },
                 function (value) {
                     if (
-                        value && value.length >= 3 &&
+                        value &&
+                        value.length >= 3 && value.length <= 30 &&
                         /^\w{3,24}$/.test(value) &&
                         this.isNameReasonable(value)
                     ) return true;
-                    return 'Imię użytkownika musi zawierać od 3 do 24 znaków. Bez znaków specjalnych i białych znaków. Np. Jan'
+                    return 'Imię użytkownika musi zawierać od 3 do 30 znaków. Bez znaków specjalnych i białych znaków. Np. Jan'
                 }.bind(this)
             ],
             lastName: '',
@@ -179,11 +231,12 @@ Vue.component('registration-page', {
                 },
                 function (value) {
                     if (
-                        value && value.length >= 3 &&
+                        value &&
+                        value.length >= 3 && value.length <= 150 &&
                         /^\w{3,24}$/.test(value) &&
                         this.isNameReasonable(value)
                     ) return true;
-                    return 'Nazwisko użytkownika musi zawierać od 3 do 24 znaków. Bez znaków specjalnych i białych znaków. Np. Kowalski'
+                    return 'Nazwisko użytkownika musi zawierać od 3 do 150 znaków. Bez znaków specjalnych i białych znaków. Np. Kowalski'
                 }.bind(this)
             ],
             email: '',
@@ -221,7 +274,7 @@ Vue.component('registration-page', {
                 function (value) {
                     if (
                         value && /^[a-zA-Z]{3,}(\ [a-zA-Z]{1,})*$/.test(value) &&
-                        value.length <= 24 &&
+                        value.length >= 3 && value.length <= 24 &&
                         this.isNameReasonable(value)
                     ) return true;
                     return 'Nazwa ulicy jest wymagana i musi zawierać od 3 do 24 znaków. Np. Przykladowa'
@@ -235,6 +288,7 @@ Vue.component('registration-page', {
                 function (value) {
                     if (
                         value && /^\w{1,6}$/.test(value) &&
+                        value.length >= 1 && value.length <= 6 &&
                         this.isHouseNumberReasonable(value)
                     ) return true;
                     return 'Numer budynku jest wymagany i musi posiadać od 1 do 6 znaków. Np. 123a'
@@ -246,6 +300,7 @@ Vue.component('registration-page', {
                     if (!value) return true;
                     if (
                         value && /^\w{1,6}$/.test(value) &&
+                        value.length >= 1 && value.length <= 6 &&
                         this.isHouseNumberReasonable(value)
                     ) return true;
                     return 'Numer budynku musi posiadać od 1 do 6 znaków. Np. 123a'
@@ -283,6 +338,8 @@ Vue.component('registration-page', {
                     Urls['inner_api:client_api_manager'](),
                     {
                         'client': {
+                            'user_name': this.userName,
+                            'password': this.password,
                             'name': this.name,
                             'last_name': this.lastName,
                             'email': this.email,
@@ -304,7 +361,7 @@ Vue.component('registration-page', {
                             'Konto użytkownika zostało utworzone.',
                             'Na podany adres e-mail został wysłany link aktywacyjny.',
                             'Przed próbą logowania prosimy o potwierdzenie rejestracji.'
-                        ].join(''),
+                        ].join(' '),
                         actionLabel = 'Zaloguj się',
                         actionType = 'login'
 
@@ -317,8 +374,13 @@ Vue.component('registration-page', {
                         data = error.body
                     if (status === 400 && data) {
                         this.errorMessage = data.message
-                        if (data.clear_fields) {
+                        if (data.clear_email) {
                             this.email = ''
+                        }
+                        else if (data.clear_username) {
+                            this.userName = ''
+                        }
+                        else if (data.clear_phone_number) {
                             this.phoneNumber = ''
                         }
                     }

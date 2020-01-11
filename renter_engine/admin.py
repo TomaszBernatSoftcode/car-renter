@@ -65,9 +65,10 @@ admin.site.empty_value_display = 'Nieznane'
 
 @admin.register(City)
 class CityAdmin(admin.ModelAdmin):
-    list_display = ('user', 'name', 'add_date')
-    search_fields = ['user', 'name']
+    list_display = ('admin_user', 'name', 'add_date')
+    search_fields = ['admin_user', 'name']
     list_filter = (('add_date', CustomDateFieldListFilter),)
+    autocomplete_fields = ['admin_user', ]
 
     def changelist_view(self, request, extra_context=None):
         if not request.user.is_superuser:
@@ -90,9 +91,10 @@ class CityAdmin(admin.ModelAdmin):
 
 @admin.register(Address)
 class AddressAdmin(admin.ModelAdmin):
-    list_display = ('user', 'city', 'street', 'house_number', 'apartment_number', 'postal_code', 'creation_date')
-    search_fields = ['user', 'name', 'city', 'street', 'house_number', 'apartment_number', 'postal_code']
+    list_display = ('admin_user', 'city', 'street', 'house_number', 'apartment_number', 'postal_code', 'creation_date')
+    search_fields = ['admin_user', 'name', 'city', 'street', 'house_number', 'apartment_number', 'postal_code']
     list_filter = (('creation_date', CustomDateFieldListFilter),)
+    autocomplete_fields = ['admin_user', 'city']
 
     def changelist_view(self, request, extra_context=None):
         if not request.user.is_superuser:
@@ -115,19 +117,20 @@ class AddressAdmin(admin.ModelAdmin):
 
 @admin.register(Client)
 class ClientAdmin(admin.ModelAdmin):
-    list_display = ('user', 'address', 'name', 'last_name', 'email', 'phone_number')
-    search_fields = ['user', 'address', 'name', 'last_name', 'email', 'phone_number']
+    list_display = ('admin_user', 'user', 'address', 'phone_number')
+    search_fields = ['admin_user', 'user', 'address', 'phone_number']
     list_filter = (('registration_date', CustomDateFieldListFilter),)
+    autocomplete_fields = ['admin_user', 'user', 'address']
 
     def changelist_view(self, request, extra_context=None):
         if not request.user.is_superuser:
-            self.list_display = ['address', 'name', 'last_name', 'email', 'phone_number']
+            self.list_display = ['user', 'address', 'phone_number']
             self.list_filter = [('registration_date', CustomDateFieldListFilter)]
         return super().changelist_view(request, extra_context)
 
     def get_form(self, request, obj=None, change=False, **kwargs):
         if not request.user.is_superuser:
-            self.fields = ('address', 'name', 'last_name', 'email', 'phone_number')
+            self.fields = ('user', 'address', 'phone_number')
         return super().get_form(request, obj, **kwargs)
 
     def save_model(self, request, obj, form, change):
@@ -141,14 +144,15 @@ class ClientAdmin(admin.ModelAdmin):
 @admin.register(Car)
 class CarAdmin(admin.ModelAdmin):
     list_display = (
-        'user', 'brand', 'type', 'model', 'boot_capacity',
+        'admin_user', 'brand', 'type', 'model', 'boot_capacity',
         'person_capacity', 'fuel_type', 'average_burning', 'gearbox_type', 'color', 'creation_date', 'car_add_date'
     )
     search_fields = [
-        'user', 'brand', 'type', 'model', 'boot_capacity',
+        'admin_user', 'brand', 'type', 'model', 'boot_capacity',
         'person_capacity', 'fuel_type', 'average_burning', 'gearbox_type', 'color'
     ]
     list_filter = (('creation_date', CustomDateFieldListFilter), ('car_add_date', CustomDateFieldListFilter))
+    autocomplete_fields = ['admin_user', ]
 
     def changelist_view(self, request, extra_context=None):
         if not request.user.is_superuser:
@@ -178,14 +182,15 @@ class CarAdmin(admin.ModelAdmin):
 @admin.register(CarDetails)
 class CarDetailsAdmin(admin.ModelAdmin):
     list_display = (
-        'user', 'car', 'number_plate', 'mileage', 'status',
+        'admin_user', 'car', 'number_plate', 'mileage', 'status',
         'image', 'description', 'last_geo_lat', 'last_geo_lon', 'last_update_date'
     )
     search_fields = [
-        'user', 'car', 'number_plate', 'mileage', 'status',
+        'admin_user', 'car', 'number_plate', 'mileage', 'status',
         'image', 'description'
     ]
     list_filter = (('last_update_date', CustomDateFieldListFilter), )
+    autocomplete_fields = ['admin_user', 'car']
 
     def changelist_view(self, request, extra_context=None):
         if not request.user.is_superuser:
@@ -212,9 +217,10 @@ class CarDetailsAdmin(admin.ModelAdmin):
 
 @admin.register(Offer)
 class OfferAdmin(admin.ModelAdmin):
-    list_display = ('user', 'car_details', 'status', 'value_per_minute', 'add_date')
-    search_fields = ['user', 'car_details', 'status', 'value_per_minute']
+    list_display = ('admin_user', 'car_details', 'status', 'value_per_minute', 'add_date')
+    search_fields = ['admin_user', 'car_details', 'status', 'value_per_minute']
     list_filter = (('add_date', CustomDateFieldListFilter),)
+    autocomplete_fields = ['admin_user', 'car_details']
 
     def changelist_view(self, request, extra_context=None):
         if not request.user.is_superuser:
@@ -236,16 +242,17 @@ class OfferAdmin(admin.ModelAdmin):
 
 
 @admin.register(CarRent)
-class OfferAdmin(admin.ModelAdmin):
+class CarRentAdmin(admin.ModelAdmin):
     list_display = (
-        'user', 'client', 'offer', 'start_geo_lat', 'start_geo_lon', 'stop_geo_lat', 'stop_geo_lon',
+        'admin_user', 'client', 'offer', 'start_geo_lat', 'start_geo_lon', 'stop_geo_lat', 'stop_geo_lon',
         'start_ts', 'stop_ts', 'true_stop_ts', 'has_paid', 'payment_timestamp'
     )
-    search_fields = ['user', 'client', 'offer', ]
+    search_fields = ['admin_user', 'client', 'offer', ]
     list_filter = (
         ('start_ts', CustomDateFieldListFilter), ('stop_ts', CustomDateFieldListFilter),
         ('true_stop_ts', CustomDateFieldListFilter), ('payment_timestamp', CustomDateFieldListFilter), 'has_paid'
     )
+    autocomplete_fields = ['admin_user', 'client', 'offer']
 
     def changelist_view(self, request, extra_context=None):
         if not request.user.is_superuser:

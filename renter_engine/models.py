@@ -14,7 +14,7 @@ class City(models.Model):
         ordering = ['name']
         unique_together = ['name', ]
 
-    user = models.ForeignKey(User, null=True, related_name='cities', on_delete=models.SET_NULL, verbose_name='Użytkownik')
+    admin_user = models.ForeignKey(User, null=True, related_name='cities_admin_users', on_delete=models.SET_NULL, verbose_name='Administrator')
     name = models.CharField(unique=True, max_length=24, validators=[NAME_PATTERN, ], verbose_name='Nazwa miasta')
     add_date = models.DateField(default=date.today, verbose_name='Data dodania miasta')
 
@@ -29,7 +29,7 @@ class Address(models.Model):
         ordering = ['city', 'street', '-creation_date']
         unique_together = ['city', 'street', 'house_number', 'apartment_number', 'postal_code']
 
-    user = models.ForeignKey(User, null=True, related_name='addresses', on_delete=models.SET_NULL, verbose_name='Użytkownik')
+    admin_user = models.ForeignKey(User, null=True, related_name='addresses_admin_users', on_delete=models.SET_NULL, verbose_name='Administrator')
     city = models.ForeignKey('City', null=True, related_name='addresses', on_delete=models.SET_NULL, verbose_name='Miasto')
     street = models.CharField(max_length=24, validators=[NAME_PATTERN, ], verbose_name='Ulica')
     house_number = models.CharField(max_length=12, validators=[DETAILED_NAME_PATTERN, ], verbose_name='Numer domu')
@@ -49,19 +49,17 @@ class Client(models.Model):
     class Meta:
         verbose_name = 'Klient'
         verbose_name_plural = 'Klienci'
-        ordering = ['-registration_date', 'name']
+        ordering = ['-registration_date', 'user__last_name']
 
-    user = models.ForeignKey(User, null=True, related_name='clients', on_delete=models.SET_NULL,verbose_name='Użytkownik')
+    admin_user = models.ForeignKey(User, null=True, related_name='clients_admin_users', on_delete=models.SET_NULL, verbose_name='Administrator')
+    user = models.ForeignKey(User, related_name='clients', on_delete=models.CASCADE, verbose_name='Klient')
     address = models.ForeignKey('Address', null=True, related_name='clients', on_delete=models.SET_NULL, verbose_name='Adres')
-    name = models.CharField(max_length=24, validators=[NAME_PATTERN, ], verbose_name='Imię')
-    last_name = models.CharField(max_length=24, validators=[NAME_PATTERN, ], verbose_name='Nazwisko')
-    email = models.EmailField(verbose_name='Adres e-mail')
-    phone_number = models.CharField(max_length=24, validators=[PHONE_NUMBER_PATTERN, ], verbose_name='Numer telefonu')
+    phone_number = models.CharField(max_length=24, unique=True, validators=[PHONE_NUMBER_PATTERN, ], verbose_name='Numer telefonu')
     registration_date = models.DateField(default=date.today, verbose_name='Data utworzenia klienta')
 
     def __str__(self):
         return '{name} {last_name}, {email}'.format(
-            name=self.name, last_name=self.last_name, email=self.email
+            name=self.user.first_name, last_name=self.user.last_name, email=self.user.email
         )
 
     @property
@@ -109,7 +107,7 @@ class Car(models.Model):
             'average_burning', 'gearbox_type', 'color',
         ]
 
-    user = models.ForeignKey(User, null=True, related_name='cars', on_delete=models.SET_NULL, verbose_name='Użytkownik')
+    admin_user = models.ForeignKey(User, null=True, related_name='cars_admin_users', on_delete=models.SET_NULL, verbose_name='Administrator')
     brand = models.CharField(max_length=24, validators=[NAME_PATTERN, ], verbose_name='Marka')
     type = models.CharField(max_length=9, choices=CAR_TYPES_CHOICES, verbose_name='Typ')
     model = models.CharField(max_length=24, validators=[DETAILED_NAME_PATTERN, ], verbose_name='Model')
@@ -166,7 +164,7 @@ class CarDetails(models.Model):
         ordering = ['car', '-last_update_date']
         unique_together = []
 
-    user = models.ForeignKey(User, null=True, related_name='car_details', on_delete=models.SET_NULL, verbose_name='Użytkownik')
+    admin_user = models.ForeignKey(User, null=True, related_name='car_details_admin_users', on_delete=models.SET_NULL, verbose_name='Administrator')
     car = models.ForeignKey('Car', related_name='details', on_delete=models.CASCADE, verbose_name='Pojazd')
     number_plate = models.CharField(max_length=8, validators=[PL_NUMBER_PLATE_PATTERN, ], verbose_name='Numer rejestracyjny')
     mileage = models.DecimalField(
@@ -201,7 +199,7 @@ class Offer(models.Model):
         verbose_name_plural = 'Oferty'
         ordering = ['car_details', '-status', '-add_date']
 
-    user = models.ForeignKey(User, null=True, related_name='offers', on_delete=models.SET_NULL, verbose_name='Użytkownik')
+    admin_user = models.ForeignKey(User, null=True, related_name='offers_admin_users', on_delete=models.SET_NULL, verbose_name='Administrator')
     car_details = models.ForeignKey('CarDetails', related_name='offers', on_delete=models.CASCADE, verbose_name='Pojazd')
     status = models.CharField(max_length=8, choices=OFFER_TYPE_CHOICES, verbose_name='Status oferty')
     value_per_minute = models.DecimalField(
@@ -229,7 +227,7 @@ class CarRent(models.Model):
         verbose_name_plural = 'Wypożyczenia'
         ordering = ['offer', '-has_paid', '-start_ts']
 
-    user = models.ForeignKey(User, null=True, related_name='rents', on_delete=models.SET_NULL, verbose_name='Użytkownik')
+    admin_user = models.ForeignKey(User, null=True, related_name='rents_admin_users', on_delete=models.SET_NULL, verbose_name='Administrator')
     client = models.ForeignKey('Client', related_name='rents', on_delete=models.CASCADE, verbose_name='Klient')
     offer = models.ForeignKey('Offer', related_name='rents', on_delete=models.CASCADE, verbose_name='Oferta')
     start_geo_lat = models.DecimalField(max_digits=10, decimal_places=7, null=False)

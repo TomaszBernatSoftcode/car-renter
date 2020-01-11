@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from renter_engine.models import Offer
-from inner_api.models.car.serializers import CarDetailsSerializer
+from inner_api.models.car_details.serializers import CarDetailsSerializer
 
 
 class OfferSerializer(serializers.ModelSerializer):

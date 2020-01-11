@@ -21,6 +21,11 @@ def user_panel(request):
 
 
 @login_required
+def rent_panel(request):
+    return render(request, 'car_renter/application/app.html', {'rent_panel': True})
+
+
+@login_required
 def map_panel(request):
     return render(request, 'car_renter/application/app.html', {'map_panel': True})
 

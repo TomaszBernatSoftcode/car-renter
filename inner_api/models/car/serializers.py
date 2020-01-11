@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from renter_engine.models import Car, CarDetails
+from renter_engine.models import Car
 
 
 class CarSerializer(serializers.ModelSerializer):
@@ -19,19 +19,3 @@ class CarNameSerializer(serializers.ModelSerializer):
     class Meta:
         model = Car
         fields = ('name', )
-
-
-class LocationSerializer(serializers.ModelSerializer):
-    car = CarNameSerializer()
-
-    class Meta:
-        model = CarDetails
-        fields = ('car', 'last_geo_lat', 'last_geo_lon', 'status')
-
-
-class CarDetailsSerializer(serializers.ModelSerializer):
-    car = CarSerializer()
-
-    class Meta:
-        model = CarDetails
-        fields = ('car', 'mileage', 'status', 'image', 'description')

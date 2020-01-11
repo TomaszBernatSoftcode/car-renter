@@ -8,12 +8,19 @@ Vue.component('user-panel', {
         </v-container>
     `,
     props: {
+        isUserFetched: {
+            type: Boolean,
+            required: true
+        }
     },
     data: function() {
         return {
         }
     },
     computed: {
+    },
+    created: function() {
+        this.$root.$emit('fetchUserFromSession')
     },
     watch: {
     },

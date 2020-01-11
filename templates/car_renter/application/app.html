@@ -4,8 +4,9 @@
     <div id="car-renter-app">
         <v-app id="renter">
             <!-- Kontent nawigacji -->
-            {% if renter_panel or map_panel or user_panel %}
+            {% if renter_panel or map_panel or user_panel or map_panel or rent_panel %}
                 <v-navigation-drawer
+                    v-if="isUserFetched"
                     v-model="drawer"
                     app
                     disable-resize-watcher
@@ -73,14 +74,18 @@
                 clipped-left
                 dark
             >
-                {% if renter_panel or map_panel or user_panel %}
-                    <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+                {% if renter_panel or map_panel or user_panel or map_panel or rent_panel %}
+                    <v-app-bar-nav-icon
+                        v-if="isUserFetched"
+                        @click.stop="drawer = !drawer"
+                    />
                 {% endif %}
                 <v-toolbar-title>Rent&Go</v-toolbar-title>
                 {% if landing_page or registration_page %}
                     <v-spacer></v-spacer>
                     {% if user.is_authenticated %}
                         <v-btn
+                            v-if="isUserFetched"
                             class="ma-2"
                             text small
                             color="white"
@@ -136,18 +141,29 @@
             {% elif registration_page %}
                 <registration-page></registration-page>
             {% elif renter_panel %}
-                <renter-panel></renter-panel>
+                <renter-panel
+                    :is-user-fetched="isUserFetched"
+                ></renter-panel>
             {% elif map_panel %}
-                <map-panel></map-panel>
+                <map-panel
+                    :is-user-fetched="isUserFetched"
+                ></map-panel>
             {% elif user_panel %}
-                <user-panel></user-panel>
+                <user-panel
+                    :is-user-fetched="isUserFetched"
+                ></user-panel>
+            {% elif rent_panel %}
+                <rent-panel
+                    :is-user-fetched="isUserFetched"
+                ></rent-panel>
             {% else %}
                 <!-- TODO: zrobic redirect do not found -->
             {% endif %}
-            {% if renter_panel or map_panel or user_panel %}
+            {% if renter_panel or map_panel or user_panel or map_panel or rent_panel %}
                 <v-footer
-                        color="primary"
-                        app
+                    v-if="isUserFetched"
+                    color="primary"
+                    app
                 >
                     <v-spacer />
 
@@ -155,6 +171,7 @@
                 </v-footer>
             {% endif %}
             <v-overlay
+                ref="overlayElement"
                 :absolute="absolute"
                 :opacity="opacity"
                 :value="overlay"
@@ -197,6 +214,7 @@
     <script src="{% static "js/vue/components/views/map_panel.js" %}"></script>
     <script src="{% static "js/vue/components/views/renter_panel.js" %}"></script>
     <script src="{% static "js/vue/components/views/user_panel.js" %}"></script>
+    <script src="{% static "js/vue/components/views/rent_panel.js" %}"></script>
     <!-- app -->
     <script src="{% static "js/vue/instances/app.js" %}"></script>
 {% endblock %}

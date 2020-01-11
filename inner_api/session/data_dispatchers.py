@@ -4,7 +4,9 @@ from rest_framework.authentication import SessionAuthentication, BasicAuthentica
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from django.http import JsonResponse
-from inner_api.session.serializers import UserSerializer
+from renter_engine.models import Client
+from inner_api.models.client.serializers import ClientSessionSerializer
+from django.contrib.auth import logout
 
 
 @api_view(['GET'])
@@ -12,7 +14,28 @@ from inner_api.session.serializers import UserSerializer
 @permission_classes([IsAuthenticated])
 def retrieve_user_from_session(request, *args, **kwargs):
     if request.user.is_authenticated:
-        serializer = UserSerializer(request.user, many=False)
+        try:
+            client = Client.objects.get(user=request.user)
+        except Client.DoesNotExist as e:
+            logout(request)
+            return Response(
+                {
+                    'message': '{0} {1}'.format(
+                        'Brak konta klienta dla zalogowanego użytkownika.',
+                        'Skontakuj się z administracją [administracja@rent-go.com].'
+                    ),
+                    'redirect': 'landing'
+                },
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        serializer = ClientSessionSerializer(client, many=False)
         return JsonResponse(serializer.data, safe=False)
     else:
-        return Response(status=status.HTTP_401_UNAUTHORIZED)
+        return Response(
+            {
+                'message': 'Brak zalogowanego użytkownika.',
+                'redirect': 'login'
+            },
+            status=status.HTTP_401_UNAUTHORIZED
+        )

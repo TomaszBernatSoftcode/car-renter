@@ -19,11 +19,20 @@ Vue.component('renter-panel', {
             </v-row>
         </v-container>
     `,
+    props: {
+        isUserFetched: {
+            type: Boolean,
+            required: true
+        }
+    },
     data: function() {
         return {
         }
     },
     computed: {
+    },
+    created: function() {
+        this.$root.$emit('fetchUserFromSession')
     },
     watch: {
     },

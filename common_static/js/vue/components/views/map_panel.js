@@ -8,10 +8,17 @@ Vue.component('map-panel', {
         </v-container>
     `,
     props: {
+        isUserFetched: {
+            type: Boolean,
+            required: true
+        }
     },
     data: function() {
         return {
         }
+    },
+    created: function() {
+        this.$root.$emit('fetchUserFromSession')
     },
     computed: {
     },
