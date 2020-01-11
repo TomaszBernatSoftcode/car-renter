@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from renter_engine.views import landing_page, renter_panel, user_panel, map_panel
+from renter_engine.views import landing_page, registration_page, renter_panel, user_panel, map_panel
 from django.contrib.auth import views as auth_views
 from django.conf import settings
 from django.conf.urls.static import static
@@ -27,7 +27,8 @@ urlpatterns = [
     path('inner-api/', include('inner_api.urls')),
     # application pages below
     path('', landing_page, name='landing_page'),
-    path('renter', renter_panel, name='renter_panel'),
+    path('registration', registration_page, name='registration_page'),
+    path('renter-panel', renter_panel, name='renter_panel'),
     path('user-panel', user_panel, name='user_panel'),
     path('map', map_panel, name='map'),
 ]

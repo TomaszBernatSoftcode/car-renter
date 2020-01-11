@@ -29,7 +29,7 @@ ALLOWED_HOSTS = ['*',]
 
 
 #Authentication
-LOGIN_REDIRECT_URL = 'renter'
+LOGIN_REDIRECT_URL = 'renter_panel'
 LOGIN_URL = 'login'
 LOGOUT_URL = 'login'
 
@@ -44,7 +44,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_js_reverse',
+    'rest_framework',
     'renter_engine.apps.RenterEngineConfig',
+    'inner_api.apps.InnerApiConfig',
 ]
 
 MIDDLEWARE = [
@@ -57,7 +59,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'renter.urls'
+ROOT_URLCONF = 'renter_engine.urls'
 
 TEMPLATES = [
     {

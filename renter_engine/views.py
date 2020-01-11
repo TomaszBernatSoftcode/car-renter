@@ -6,6 +6,10 @@ def landing_page(request):
     return render(request, 'car_renter/application/app.html', {'landing_page': True})
 
 
+def registration_page(request):
+    return render(request, 'car_renter/application/app.html', {'registration_page': True})
+
+
 @login_required
 def renter_panel(request):
     return render(request, 'car_renter/application/app.html', {'renter_panel': True})
