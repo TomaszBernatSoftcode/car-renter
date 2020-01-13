@@ -8,4 +8,4 @@ class CarRentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CarRent
-        fields = ('offer', 'start_ts', 'stop_ts', 'true_stop_ts', 'has_paid', 'payment_timestamp')
+        fields = ('id', 'offer', 'start_ts', 'stop_ts', 'true_stop_ts', 'has_paid', 'payment_timestamp')

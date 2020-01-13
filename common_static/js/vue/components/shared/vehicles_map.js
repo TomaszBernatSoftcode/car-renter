@@ -11,9 +11,11 @@ Vue.component('vehicles-map', {
                 cols="12"
             >
                 <v-card 
-                    id="mapid" style="z-index: 0;"
-                    :height="mapHeight"
-                    :width="mapWidth"
+                    id="mapid" 
+                    style="z-index: 0;"
+                    :style="fullSizeClasses"
+                    :height="correctMapHeight"
+                    :width="correctMapWidth"
                 >
                 </v-card>
             </v-col>
@@ -27,6 +29,10 @@ Vue.component('vehicles-map', {
         mapHeight: {
             type: Number,
             required: true,
+        },
+        fullSize: {
+            type: Boolean,
+            default: false
         },
         zoom: {
             type: Number,
@@ -62,6 +68,18 @@ Vue.component('vehicles-map', {
         }
     },
     computed: {
+        correctMapHeight: function () {
+            return this.mapHeight > 0 ? this.mapHeight : "100%"
+        },
+        correctMapWidth: function () {
+            return this.mapWidth > 0 ? this.mapWidth : "100%"
+        },
+        fullSizeClasses: function () {
+            if (this.fullSize) {
+                return { position: 'absolute', left: 0, top: 0, right: 0, bottom: 0 }
+            }
+            return {}
+        }
     },
     watch: {
         markersPositions: {
@@ -69,8 +87,10 @@ Vue.component('vehicles-map', {
             handler: function (newValue) {
                 if (!_.isEmpty(newValue) && !_.isEmpty(this.map)) {
                     _.forEach(newValue, function (carData) {
-                        var marker = L.marker([carData.last_geo_lat, carData.last_geo_lon]).addTo(this.map)
-                        marker.bindPopup("<b>" + carData.car.name + "</b>")
+                        if (carData.status === 'available') {
+                            var marker = L.marker([carData.last_geo_lat, carData.last_geo_lon]).addTo(this.map)
+                            marker.bindPopup("<b>" + carData.car.name + "</b>")
+                        }
                     }.bind(this))
                 }
             }

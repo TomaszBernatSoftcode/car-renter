@@ -21,10 +21,12 @@ Vue.component('vehicle-card', {
                     <span><v-icon small>mdi-account-supervisor</v-icon>: [[ details.personCapacity ]]</span>
                     <span><v-icon small>mdi-cart-arrow-down</v-icon>: [[ details.bootCapacity ]]L</span>
                     <span><v-icon small>mdi-gas-station</v-icon>: [[ details.fuelType ]]</span>
+                </div>
+                <div>
                     <span><v-icon small>mdi-car-shift-pattern</v-icon>: [[ details.gearboxType ]]</span>
                 </div>
                 <div>
-                    [[ details.price ]] zł/h
+                    <span><v-icon small>mdi-currency-usd</v-icon>: [[ details.price ]] zł/h</span>
                 </div>
             </v-card-text>
     

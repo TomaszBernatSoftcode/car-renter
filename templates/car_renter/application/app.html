@@ -11,6 +11,8 @@
                     app
                     disable-resize-watcher
                     disable-route-watcher
+                    hide-overlay
+                    clipped
                 >
                     <template
                         v-if="isUserFetched"
@@ -18,14 +20,11 @@
                     >
                         <v-list-item two-line>
                             <v-list-item-avatar>
-                                <img
-                                    src="https://cdn.vuetifyjs.com/images/john.jpg"
-                                    alt="John"
-                                >
+                                <v-icon>mdi-account-circle</v-icon>
                             </v-list-item-avatar>
 
                             <v-list-item-content>
-                                <v-list-item-title>[[ user.username ]]</v-list-item-title>
+                                <v-list-item-title>[[ user.user.username ]]</v-list-item-title>
                                 <v-list-item-subtitle>
                                     <v-btn
                                         x-small
@@ -33,7 +32,7 @@
                                         @click="logOutUser()"
                                         :disabled="!isUserFetched"
                                     >
-                                        Log Out
+                                        Wyloguj
                                     </v-btn>
                                 </v-list-item-subtitle>
                             </v-list-item-content>
@@ -45,17 +44,10 @@
                     ></v-divider>
 
                     <v-list dense>
-                        <v-list-item link>
-                            <v-list-item-action>
-                                <v-icon>mdi-earth</v-icon>
-                            </v-list-item-action>
-
-                            <v-list-item-content>
-                                <v-list-item-title>Mapa</v-list-item-title>
-                            </v-list-item-content>
-                        </v-list-item>
-
-                        <v-list-item link>
+                        <v-list-item
+                            link
+                            @click="openRenterPanel()"
+                        >
                             <v-list-item-action>
                                 <v-icon>mdi-car</v-icon>
                             </v-list-item-action>
@@ -64,28 +56,54 @@
                                 <v-list-item-title>Panel wynajmu</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
+
+                        <v-list-item
+                            link
+                            @click="openHistoricRentPanel()"
+                        >
+                            <v-list-item-action>
+                                <v-icon>mdi-clipboard-list-outline</v-icon>
+                            </v-list-item-action>
+
+                            <v-list-item-content>
+                                <v-list-item-title>Panel wypożyczeń</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+
+                        <v-list-item
+                            link
+                            @click="openMapPanel()"
+                        >
+                            <v-list-item-action>
+                                <v-icon>mdi-earth</v-icon>
+                            </v-list-item-action>
+
+                            <v-list-item-content>
+                                <v-list-item-title>Mapa</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
                     </v-list>
                 </v-navigation-drawer>
             {% endif %}
             <!-- Render nawigacji -->
             <v-app-bar
                 app
-                color="primary"
                 clipped-left
+                color="primary"
                 dark
             >
                 {% if renter_panel or map_panel or user_panel or map_panel or rent_panel %}
                     <v-app-bar-nav-icon
                         v-if="isUserFetched"
                         @click.stop="drawer = !drawer"
-                    />
+                    >
+                    </v-app-bar-nav-icon>
                 {% endif %}
                 <v-toolbar-title>Rent&Go</v-toolbar-title>
                 {% if landing_page or registration_page %}
                     <v-spacer></v-spacer>
                     {% if user.is_authenticated %}
                         <v-btn
-                            v-if="isUserFetched"
                             class="ma-2"
                             text small
                             color="white"
@@ -143,18 +161,22 @@
             {% elif renter_panel %}
                 <renter-panel
                     :is-user-fetched="isUserFetched"
+                    :user="user"
                 ></renter-panel>
             {% elif map_panel %}
                 <map-panel
                     :is-user-fetched="isUserFetched"
+                    :user="user"
                 ></map-panel>
             {% elif user_panel %}
                 <user-panel
                     :is-user-fetched="isUserFetched"
+                    :user="user"
                 ></user-panel>
             {% elif rent_panel %}
                 <rent-panel
                     :is-user-fetched="isUserFetched"
+                    :user="user"
                 ></rent-panel>
             {% else %}
                 <!-- TODO: zrobic redirect do not found -->
