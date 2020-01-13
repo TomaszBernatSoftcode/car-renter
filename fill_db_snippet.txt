@@ -18,17 +18,41 @@ Address(admin_user=admin_user,city=city,street="Oleska",house_number="34",apartm
 Address(admin_user=admin_user,city=city,street="1-maja",house_number="10",apartment_number="4",postal_code="47-54", creation_date=date.today()).save()
 
 #Clients Users objects creation
-User(username='adam-wkladam', password='!QAZ2wsx#EDC', first_name='Adam', last_name='Wkładam', email='adam.wkladam@gmail.com').save()
-User(username='kamil-note', password='!QAZ2wsx#EDC', first_name='Kamil', last_name='Note', email='kamil.note@gmail.com').save()
-User(username='hassan-kebab', password='!QAZ2wsx#EDC', first_name='Hassan', last_name='Kebab', email='hassan.kebab@gmail.com').save()
-User(username='max-newman', password='!QAZ2wsx#EDC', first_name='Max', last_name='Newman', email='max.newman@gmail.com').save()
-User(username='piotr-kosa', password='!QAZ2wsx#EDC', first_name='Piotr', last_name='Kosa', email='piotr.kosa@gmail.com').save()
-
-u1 = User.objects.get(username='adam-wkladam')
-u2 = User.objects.get(username='kamil-note')
-u3 = User.objects.get(username='hassan-kebab')
-u4 = User.objects.get(username='max-newman')
-u5 = User.objects.get(username='piotr-kosa')
+u1 = User.objects.create_user(
+    username='adam-wkladam',
+    email='adam.wkladam@gmail.com',
+    password='!QAZ2wsx#EDC',
+    first_name='Adam',
+    last_name='Wkładam'
+)
+u2 = User.objects.create_user(
+    username='kamil-note',
+    email='kamil.note@gmail.com',
+    password='!QAZ2wsx#EDC',
+    first_name='Kamil',
+    last_name='Note'
+)
+u3 = User.objects.create_user(
+    username='hassan-kebab',
+    email='hassan.kebab@gmail.com',
+    password='!QAZ2wsx#EDC',
+    first_name='Hassan',
+    last_name='Kebab'
+)
+u4 = User.objects.create_user(
+    username='max-newman',
+    email='max.newman@gmail.com',
+    password='!QAZ2wsx#EDC',
+    first_name='Max',
+    last_name='Newman'
+)
+u5 = User.objects.create_user(
+    username='piotr-kosa',
+    email='piotr.kosa@gmail.com',
+    password='!QAZ2wsx#EDC',
+    first_name='Piotr',
+    last_name='Kosa'
+)
 
 #Clients objects creation
 Client(admin_user=admin_user, user=u1, address=Address.objects.get(id=1), phone_number="111-000-111", registration_date=date.today()).save()
@@ -38,11 +62,11 @@ Client(admin_user=admin_user, user=u4, address=Address.objects.get(id=4), phone_
 Client(admin_user=admin_user, user=u5, address=Address.objects.get(id=5), phone_number="881-080-199", registration_date=date.today()).save()
 
 #Car objects creation
-Car(admin_user=admin_user, brand="Audi", type="A4 Allroad", model="XX12", boot_capacity="350", person_capacity="5", fuel_type="gasoline",  average_burning="8", gearbox_type="manual", color="black", creation_date=date(2015,1,10), car_add_date=date.today()).save()
-Car(admin_user=admin_user, brand="Skoda", type="Fabia", model="Active", boot_capacity="425", person_capacity="5", fuel_type="electricity",  average_burning="14", gearbox_type="auto", color="green", creation_date=date(2013,5,7), car_add_date=date.today()).save()
-Car(admin_user=admin_user, brand="Opel", type="Corsa", model="ZXC12", boot_capacity="250", person_capacity="5", fuel_type="electricity",  average_burning="11", gearbox_type="manual", color="red", creation_date=date(2016,3,17), car_add_date=date.today()).save()
-Car(admin_user=admin_user, brand="Volkswagen", type="Polo", model="YYM12", boot_capacity="500", person_capacity="5", fuel_type="gasoline",  average_burning="15", gearbox_type="auto", color="yellow", creation_date=date(2018,2,8), car_add_date=date.today()).save()
-Car(admin_user=admin_user, brand="Fiat", type="Panda", model="MM12", boot_capacity="200", person_capacity="5", fuel_type="electricity",  average_burning="8", gearbox_type="manual", color="black", creation_date=date(2018,2,8), car_add_date=date.today()).save()
+Car(admin_user=admin_user, brand="Audi", type="A4 Allroad", model="XX12", boot_capacity="350", person_capacity="5", fuel_type="gasoline",  average_burning="8", gearbox_type="manual", color="czarny", creation_date=date(2015,1,10), car_add_date=date.today()).save()
+Car(admin_user=admin_user, brand="Skoda", type="Fabia", model="Active", boot_capacity="425", person_capacity="5", fuel_type="electricity",  average_burning="14", gearbox_type="auto", color="zielony", creation_date=date(2013,5,7), car_add_date=date.today()).save()
+Car(admin_user=admin_user, brand="Opel", type="Corsa", model="ZXC12", boot_capacity="250", person_capacity="5", fuel_type="electricity",  average_burning="11", gearbox_type="manual", color="czerwony", creation_date=date(2016,3,17), car_add_date=date.today()).save()
+Car(admin_user=admin_user, brand="Volkswagen", type="Polo", model="YYM12", boot_capacity="500", person_capacity="5", fuel_type="gasoline",  average_burning="15", gearbox_type="auto", color="żółty", creation_date=date(2018,2,8), car_add_date=date.today()).save()
+Car(admin_user=admin_user, brand="Fiat", type="Panda", model="MM12", boot_capacity="200", person_capacity="5", fuel_type="electricity",  average_burning="8", gearbox_type="manual", color="czarny", creation_date=date(2018,2,8), car_add_date=date.today()).save()
 
 #CarDetails objects creation
 #dodać image

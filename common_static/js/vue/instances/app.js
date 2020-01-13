@@ -40,7 +40,7 @@ new Vue({
         fetchUserDetails: function () {
             return this.$http.get(Urls['inner_api:retrieve_user_from_session']())
                 .then(function (response) {
-                    this.user = response.data.results
+                    this.user = response.data
                 })
                 .catch(function (error) {
                     var status = error.status,
@@ -56,7 +56,14 @@ new Vue({
                 })
         },
         logOutUser: function () {
-
+            return this.$http.get(Urls['logout']())
+                .then(function (response) {
+                    this.user = {}
+                    location.reload()
+                })
+                .catch(function (error) {
+                    Vue.toasted.error('Błąd: Użytkownik nie mógł zostać wylogowany.')
+                })
         },
         handleResize: function () {
             var windowWidth = window.innerWidth
@@ -67,6 +74,12 @@ new Vue({
         },
         openRenterPanel: function () {
             window.open(Urls['renter_panel'](), '_self')
+        },
+        openMapPanel: function () {
+            window.open(Urls['map'](), '_self')
+        },
+        openHistoricRentPanel: function () {
+            window.open(Urls['rent_panel'](), '_self')
         },
         openRegistrationPage: function () {
             window.open(Urls['registration_page'](), '_self')

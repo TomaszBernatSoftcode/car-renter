@@ -56,21 +56,19 @@ class ClientViewSet(viewsets.ModelViewSet):
                         'clear_email': True
                     })
 
-                user, user_created = User.objects.get_or_create(
-                    username=serialized_data['user_name'],
-                    defaults={
-                        'email': serialized_data['email'],
-                        'password': serialized_data['password'],
-                        'first_name': serialized_data['name'],
-                        'last_name': serialized_data['last_name']
-                    }
-                )
-
-                if not user_created:
+                if User.objects.filter(username=serialized_data['user_name']).count() > 0:
                     return Response(status=status.HTTP_400_BAD_REQUEST, data={
                         'message': 'Użytkownik o podanej nazwie użytkownika już istnieje.',
                         'clear_username': True
                     })
+
+                user = User.objects.create_user(
+                    username=serialized_data['user_name'],
+                    email=serialized_data['email'],
+                    password=serialized_data['password'],
+                    first_name=serialized_data['name'],
+                    last_name=serialized_data['last_name']
+                )
 
                 Client(
                     user=user,

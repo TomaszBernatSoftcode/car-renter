@@ -1,13 +1,12 @@
 import re
 
+from random import shuffle, randrange
+
+from django.http import JsonResponse
 from rest_framework import generics, status
 from rest_framework.response import Response
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.decorators import api_view, authentication_classes, permission_classes
-from renter_engine.models import CarDetails, CarRent
+from renter_engine.models import CarDetails
 from inner_api.models.car_details.serializers import LocationSerializer
-from inner_api.models.car_rent.serializers import CarRentSerializer
 
 
 class CarsLatestLocationsList(generics.ListAPIView):
@@ -19,40 +18,37 @@ class CarsLatestLocationsList(generics.ListAPIView):
     serializer_class = LocationSerializer
 
 
-class HistoricRentsList(generics.ListAPIView):
+class CarLatestLocationsList(generics.ListAPIView):
     """
     ViewSet for fetching currencies
     """
 
     def list(self, request, *args, **kwargs):
-        pass
+        car_id = kwargs.get('car_id')
 
+        lat_lon_pairs = [
+            {'lat': 50.659915, 'lon': 17.899422},
+            {'lat': 50.655375, 'lon': 17.922242},
+            {'lat': 50.644960, 'lon': 17.943348},
+            {'lat': 50.669239, 'lon': 17.920034},
+            {'lat': 50.672766, 'lon': 17.910819},
+            {'lat': 50.682193, 'lon': 17.855741},
+            {'lat': 50.688973, 'lon': 17.912666},
+            {'lat': 50.694441, 'lon': 17.927777},
+            {'lat': 50.669036, 'lon': 17.941092},
+            {'lat': 50.679944, 'lon': 17.943997},
+            {'lat': 50.687816, 'lon': 17.916858},
+            {'lat': 50.698550, 'lon': 17.911684},
+            {'lat': 50.698305, 'lon': 17.903984},
+            {'lat': 50.661259, 'lon': 17.941605},
+            {'lat': 50.664904, 'lon': 17.938372},
+            {'lat': 50.667425, 'lon': 17.932919},
+            {'lat': 50.672774, 'lon': 17.959607},
+            {'lat': 50.675311, 'lon': 17.942894},
+            {'lat': 50.680670, 'lon': 17.939539},
+            {'lat': 50.679046, 'lon': 17.931643}
+        ]
+        shuffle(lat_lon_pairs)
+        random_index = randrange(20)
 
-@api_view(['GET'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
-@permission_classes([IsAuthenticated])
-def retrieve_ongoing_rent_from_user(request, *args, **kwargs):
-    if request.user.is_authenticated:
-        user_id = re.match('^\d+$', kwargs.get('userId'))
-        if not user_id:
-            return Response(
-                {'message': 'Invalid user id provided'},
-                content_type='application/json', status=status.HTTP_400_BAD_REQUEST
-            )
-
-        try:
-            car_rent = CarRent.objects.get(
-                client__user__id=user_id,
-                true_stop_ts__isnull=True
-            )
-            serializer = CarRentSerializer(car_rent, many=False)
-
-            return Response(serializer.data, content_type='application/json')
-        except CarRent.DoesNotExist as e:
-            # TODO: dodac message do wyswietlenia we froncie
-            return Response(status=status.HTTP_404_NOT_FOUND)
-        except CarRent.MultipleObjectsReturned as e:
-            #TODO: dodac message i powiadomienie dla adminow
-            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-    else:
-        return Response(status=status.HTTP_401_UNAUTHORIZED)
+        return JsonResponse(lat_lon_pairs[random_index])

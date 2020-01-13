@@ -7,6 +7,7 @@ from django.http import JsonResponse
 from renter_engine.models import Client
 from inner_api.models.client.serializers import ClientSessionSerializer
 from django.contrib.auth import logout
+from django.shortcuts import redirect
 
 
 @api_view(['GET'])
@@ -39,3 +40,14 @@ def retrieve_user_from_session(request, *args, **kwargs):
             },
             status=status.HTTP_401_UNAUTHORIZED
         )
+
+
+@api_view(['GET'])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
+def log_out_user(request, *args, **kwargs):
+    if request.user.is_authenticated:
+        logout(request)
+        return Response(status=status.HTTP_200_OK)
+    else:
+        return redirect('login')

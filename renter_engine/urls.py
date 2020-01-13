@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from renter_engine.views import landing_page, registration_page, renter_panel, user_panel, map_panel, rent_panel
+from inner_api.session.data_dispatchers import log_out_user
 from django.contrib.auth import views as auth_views
 from django.conf import settings
 from django.conf.urls.static import static
@@ -24,6 +25,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('login', auth_views.LoginView.as_view(), name='login'),
+    path('logout', log_out_user, name='logout'),
     path('inner-api/', include('inner_api.urls')),
     # application pages below
     path('', landing_page, name='landing_page'),

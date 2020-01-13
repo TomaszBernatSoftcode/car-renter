@@ -6,14 +6,14 @@ Vue.component('renter-panel', {
         >
             <v-row>
                 <!-- Nawigacja menu modeli -->
-                <v-col cols="3">
-                    <vehicle-models-navigation></vehicle-models-navigation>
+                <v-col cols="2">
+                    <div>Test</div>
                 </v-col>
                 
                 <v-col cols="1"></v-col>
                 
                 <!-- Karty i wyszukiwarka -->
-                <v-col cols="8">
+                <v-col cols="9">
                     <vehicles-cards-container></vehicles-cards-container>
                 </v-col>
             </v-row>
