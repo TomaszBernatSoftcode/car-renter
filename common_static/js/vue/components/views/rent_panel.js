@@ -206,7 +206,6 @@ Vue.component('rent-panel', {
             return this.$http.get(Urls['inner_api:client_ongoing_rent'](this.user.user.id))
                 .then(function (response) {
                     this.ongoingRent = response.data
-                    this.isOngoingRentFetching = false
                 })
                 .catch(function (error) {
                     this.ongoingRent = {}
@@ -218,8 +217,10 @@ Vue.component('rent-panel', {
                             'Błąd: Dane o trwającym wypożyczeniu nie mogły zostać pobrane. Prosimy odświeżyć stronę.'
                         )
                     }
-                    this.isOngoingRentFetching = false
                 })
+                .finally(function () {
+                    this.isOngoingRentFetching = false
+                }.bind(this))
         },
         fetchHistoricRents: function() {
             this.areHistoricRentsFetching = true
@@ -227,7 +228,6 @@ Vue.component('rent-panel', {
             return this.$http.get(Urls['inner_api:client_historic_rents'](this.user.user.id))
                 .then(function (response) {
                     this.historicRents = response.data
-                    this.areHistoricRentsFetching = false
                 })
                 .catch(function (error) {
                     this.historicRents = []
@@ -239,8 +239,9 @@ Vue.component('rent-panel', {
                             'Błąd: Dane o historycznych wypożyczeniach nie mogły zostać pobrane. Prosimy odświeżyć stronę.'
                         )
                     }
+                }).finally(function () {
                     this.areHistoricRentsFetching = false
-                })
+                }.bind(this))
         },
         fetchCarsLatestGeoCoordinates: function () {
             return this.$http.get(

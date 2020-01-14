@@ -58,8 +58,8 @@ Vue.component('map-panel', {
                 })
         },
         refreshVehiclePositions: function () {
-            this.fetchVehiclesPosition().then(function (response) {
-                if (response) {
+            this.fetchVehiclesPosition().then(function (result) {
+                if (result) {
                    setTimeout(this.refreshVehiclePositions, this.refreshTimeout)
                 }
                 else {

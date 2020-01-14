@@ -85,6 +85,7 @@ Vue.component('vehicles-map', {
         markersPositions: {
             immediate:true,
             handler: function (newValue) {
+                //TOOD: przed dodaniem nowych markerów należy usunąć stare.
                 if (!_.isEmpty(newValue) && !_.isEmpty(this.map)) {
                     _.forEach(newValue, function (carData) {
                         if (carData.status === 'available') {

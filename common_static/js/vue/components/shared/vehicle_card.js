@@ -33,18 +33,17 @@ Vue.component('vehicle-card', {
             <v-card-actions
                 v-if="isReservationBtnEnabled"
             >
-                <v-btn
-                    color="green"
-                    text
+                <v-row
+                    align="center"
+                    justify="center"
                 >
-                    Zarezerwuj
-                </v-btn>
-                <v-btn
-                    color="primary"
-                    text
-                >
-                    Sprwadź położenie
-                </v-btn>
+                    <v-btn
+                        color="green"
+                        text
+                    >
+                        Zarezerwuj
+                    </v-btn>
+                </v-row>
             </v-card-actions>
         </v-card>
     `,

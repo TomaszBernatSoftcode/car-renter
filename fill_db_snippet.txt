@@ -68,6 +68,17 @@ Car(admin_user=admin_user, brand="Opel", type="Corsa", model="ZXC12", boot_capac
 Car(admin_user=admin_user, brand="Volkswagen", type="Polo", model="YYM12", boot_capacity="500", person_capacity="5", fuel_type="gasoline",  average_burning="15", gearbox_type="auto", color="żółty", creation_date=date(2018,2,8), car_add_date=date.today()).save()
 Car(admin_user=admin_user, brand="Fiat", type="Panda", model="MM12", boot_capacity="200", person_capacity="5", fuel_type="electricity",  average_burning="8", gearbox_type="manual", color="czarny", creation_date=date(2018,2,8), car_add_date=date.today()).save()
 
+Car(admin_user=admin_user, brand="Fiat", type="Panda", model="MM12", boot_capacity="200", person_capacity="5", fuel_type="electricity",  average_burning="8", gearbox_type="manual", color="czarny", creation_date=date(2018,2,8), car_add_date=date.today()).save()
+Car(admin_user=admin_user, brand="Fiat", type="Panda", model="MM12", boot_capacity="200", person_capacity="5", fuel_type="electricity",  average_burning="8", gearbox_type="manual", color="czarny", creation_date=date(2018,2,8), car_add_date=date.today()).save()
+Car(admin_user=admin_user, brand="Fiat", type="Panda", model="MM12", boot_capacity="200", person_capacity="5", fuel_type="electricity",  average_burning="8", gearbox_type="manual", color="czarny", creation_date=date(2018,2,8), car_add_date=date.today()).save()
+Car(admin_user=admin_user, brand="Fiat", type="Panda", model="MM12", boot_capacity="200", person_capacity="5", fuel_type="electricity",  average_burning="8", gearbox_type="manual", color="czarny", creation_date=date(2018,2,8), car_add_date=date.today()).save()
+Car(admin_user=admin_user, brand="Fiat", type="Panda", model="MM12", boot_capacity="200", person_capacity="5", fuel_type="electricity",  average_burning="8", gearbox_type="manual", color="czarny", creation_date=date(2018,2,8), car_add_date=date.today()).save()
+Car(admin_user=admin_user, brand="Fiat", type="Panda", model="MM12", boot_capacity="200", person_capacity="5", fuel_type="electricity",  average_burning="8", gearbox_type="manual", color="czarny", creation_date=date(2018,2,8), car_add_date=date.today()).save()
+Car(admin_user=admin_user, brand="Fiat", type="Panda", model="MM12", boot_capacity="200", person_capacity="5", fuel_type="electricity",  average_burning="8", gearbox_type="manual", color="czarny", creation_date=date(2018,2,8), car_add_date=date.today()).save()
+Car(admin_user=admin_user, brand="Fiat", type="Panda", model="MM12", boot_capacity="200", person_capacity="5", fuel_type="electricity",  average_burning="8", gearbox_type="manual", color="czarny", creation_date=date(2018,2,8), car_add_date=date.today()).save()
+Car(admin_user=admin_user, brand="Fiat", type="Panda", model="MM12", boot_capacity="200", person_capacity="5", fuel_type="electricity",  average_burning="8", gearbox_type="manual", color="czarny", creation_date=date(2018,2,8), car_add_date=date.today()).save()
+Car(admin_user=admin_user, brand="Fiat", type="Panda", model="MM12", boot_capacity="200", person_capacity="5", fuel_type="electricity",  average_burning="8", gearbox_type="manual", color="czarny", creation_date=date(2018,2,8), car_add_date=date.today()).save()
+
 #CarDetails objects creation
 #dodać image
 car=list(Car.objects.all())
@@ -75,6 +86,17 @@ CarDetails(admin_user=admin_user, car=car[0], number_plate="OST444ac", mileage="
 CarDetails(admin_user=admin_user, car=car[1], number_plate="OP944cd", mileage="74000", status=CarDetails.AVAILABLE, image="", description="Ciekawe to auto", last_geo_lat=Decimal('50.659546'), last_geo_lon=Decimal('17.981765')).save()
 CarDetails(admin_user=admin_user, car=car[2], number_plate="OST454ac", mileage="224000", status=CarDetails.AVAILABLE, image="", description="Ciekawe to auto", last_geo_lat=Decimal('50.666400'), last_geo_lon=Decimal('17.985564')).save()
 CarDetails(admin_user=admin_user, car=car[3], number_plate="OST944ac", mileage="184000", status=CarDetails.AVAILABLE, image="", description="Ciekawe to auto", last_geo_lat=Decimal('50.671830'), last_geo_lon=Decimal('17.926941')).save()
+CarDetails(admin_user=admin_user, car=car[4], number_plate="OST441ac", mileage="134000", status=CarDetails.AVAILABLE, image="", description="Ciekawe to auto", last_geo_lat=Decimal('50.697366'), last_geo_lon=Decimal('17.928816')).save()
+
+CarDetails(admin_user=admin_user, car=car[4], number_plate="OST441ac", mileage="134000", status=CarDetails.AVAILABLE, image="", description="Ciekawe to auto", last_geo_lat=Decimal('50.697366'), last_geo_lon=Decimal('17.928816')).save()
+CarDetails(admin_user=admin_user, car=car[4], number_plate="OST441ac", mileage="134000", status=CarDetails.AVAILABLE, image="", description="Ciekawe to auto", last_geo_lat=Decimal('50.697366'), last_geo_lon=Decimal('17.928816')).save()
+CarDetails(admin_user=admin_user, car=car[4], number_plate="OST441ac", mileage="134000", status=CarDetails.AVAILABLE, image="", description="Ciekawe to auto", last_geo_lat=Decimal('50.697366'), last_geo_lon=Decimal('17.928816')).save()
+CarDetails(admin_user=admin_user, car=car[4], number_plate="OST441ac", mileage="134000", status=CarDetails.AVAILABLE, image="", description="Ciekawe to auto", last_geo_lat=Decimal('50.697366'), last_geo_lon=Decimal('17.928816')).save()
+CarDetails(admin_user=admin_user, car=car[4], number_plate="OST441ac", mileage="134000", status=CarDetails.AVAILABLE, image="", description="Ciekawe to auto", last_geo_lat=Decimal('50.697366'), last_geo_lon=Decimal('17.928816')).save()
+CarDetails(admin_user=admin_user, car=car[4], number_plate="OST441ac", mileage="134000", status=CarDetails.AVAILABLE, image="", description="Ciekawe to auto", last_geo_lat=Decimal('50.697366'), last_geo_lon=Decimal('17.928816')).save()
+CarDetails(admin_user=admin_user, car=car[4], number_plate="OST441ac", mileage="134000", status=CarDetails.AVAILABLE, image="", description="Ciekawe to auto", last_geo_lat=Decimal('50.697366'), last_geo_lon=Decimal('17.928816')).save()
+CarDetails(admin_user=admin_user, car=car[4], number_plate="OST441ac", mileage="134000", status=CarDetails.AVAILABLE, image="", description="Ciekawe to auto", last_geo_lat=Decimal('50.697366'), last_geo_lon=Decimal('17.928816')).save()
+CarDetails(admin_user=admin_user, car=car[4], number_plate="OST441ac", mileage="134000", status=CarDetails.AVAILABLE, image="", description="Ciekawe to auto", last_geo_lat=Decimal('50.697366'), last_geo_lon=Decimal('17.928816')).save()
 CarDetails(admin_user=admin_user, car=car[4], number_plate="OST441ac", mileage="134000", status=CarDetails.AVAILABLE, image="", description="Ciekawe to auto", last_geo_lat=Decimal('50.697366'), last_geo_lon=Decimal('17.928816')).save()
 
 #Offer objects creation
@@ -88,4 +110,15 @@ Offer(admin_user=admin_user, car_details=car_details[2], status='running', value
 #Volkswagen
 Offer(admin_user=admin_user, car_details=car_details[3], status='running', value_per_minute=Decimal('0.32'), add_date=date.today()).save()
 #Fiat
+Offer(admin_user=admin_user, car_details=car_details[4], status='running', value_per_minute=Decimal('0.09'), add_date=date.today()).save()
+
+Offer(admin_user=admin_user, car_details=car_details[4], status='running', value_per_minute=Decimal('0.09'), add_date=date.today()).save()
+Offer(admin_user=admin_user, car_details=car_details[4], status='running', value_per_minute=Decimal('0.09'), add_date=date.today()).save()
+Offer(admin_user=admin_user, car_details=car_details[4], status='running', value_per_minute=Decimal('0.09'), add_date=date.today()).save()
+Offer(admin_user=admin_user, car_details=car_details[4], status='running', value_per_minute=Decimal('0.09'), add_date=date.today()).save()
+Offer(admin_user=admin_user, car_details=car_details[4], status='running', value_per_minute=Decimal('0.09'), add_date=date.today()).save()
+Offer(admin_user=admin_user, car_details=car_details[4], status='running', value_per_minute=Decimal('0.09'), add_date=date.today()).save()
+Offer(admin_user=admin_user, car_details=car_details[4], status='running', value_per_minute=Decimal('0.09'), add_date=date.today()).save()
+Offer(admin_user=admin_user, car_details=car_details[4], status='running', value_per_minute=Decimal('0.09'), add_date=date.today()).save()
+Offer(admin_user=admin_user, car_details=car_details[4], status='running', value_per_minute=Decimal('0.09'), add_date=date.today()).save()
 Offer(admin_user=admin_user, car_details=car_details[4], status='running', value_per_minute=Decimal('0.09'), add_date=date.today()).save()
